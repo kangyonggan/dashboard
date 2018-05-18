@@ -3,11 +3,11 @@
     <Navbar/>
 
     <div class="main-container" id="main-container">
-      <Sidebar/>
+      <Sidebar v-if="login"/>
 
       <div class="main-content">
         <div class="main-content-inner">
-          <div class="breadcrumbs" id="breadcrumbs">
+          <div class="breadcrumbs" id="breadcrumbs" v-if="login">
             <ul class="breadcrumb">
               <li>
                 <i class="ace-icon fa fa-tachometer home-icon"></i>
@@ -38,7 +38,15 @@
 
   export default {
     components: {Navbar, Footer, Sidebar},
-    name: 'App'
+    name: 'App',
+    data() {
+      return {
+        login: false
+      }
+    },
+    created: function () {
+      this.login = this.isLogin();
+    }
   }
 </script>
 

@@ -51,3 +51,8 @@
 .skin-3 .skin-color {
   color: #404040;
 }
+
+.required:after {
+  color: red;
+  content: "*";
+}
