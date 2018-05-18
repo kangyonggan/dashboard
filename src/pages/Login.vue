@@ -40,7 +40,7 @@
                 <i class="ace-icon fa fa-refresh"></i>
                 重置
               </button>
-              <button id="submit" @click="login($event)" class="width-35 pull-right btn btn-sm btn-primary"
+              <button id="submit" @click="login($event)" class="width-35 pull-right btn btn-sm btn-skin"
                       data-loading-text="登录中...">
                 <i class="ace-icon fa fa-key"></i>
                 登录

@@ -17,6 +17,7 @@
           </div>
 
           <div class="page-content">
+            <Settings/>
             <router-view/>
           </div>
         </div>
@@ -35,9 +36,10 @@
   import Navbar from "./components/ace/Navbar.vue";
   import Footer from "./components/ace/Footer.vue";
   import Sidebar from "./components/ace/Sidebar.vue";
+  import Settings from "./components/ace/Settings.vue";
 
   export default {
-    components: {Navbar, Footer, Sidebar},
+    components: {Navbar, Footer, Sidebar, Settings},
     name: 'App',
     data() {
       return {
