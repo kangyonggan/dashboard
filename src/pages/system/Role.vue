@@ -1,0 +1,15 @@
+<template>
+  <div>
+    角色管理
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'SystemRole'
+  }
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>
