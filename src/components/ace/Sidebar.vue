@@ -59,6 +59,37 @@
         that.menus = data.list;
         Vue.nextTick(function () {
           updateState('/' + window.location.hash);
+
+          // sidebar highlight init
+          if (ace.settings.exists('sidebar', 'highlight')) {
+            document.getElementById("ace-settings-highlight").checked = true;
+            $('#sidebar .nav-list > li').addClass('highlight');
+
+            if (ace.vars['old_ie']) ace.helper.redraw($('#sidebar')[0]);
+          }
+
+          // sidebar hover init
+          if (ace.settings.exists('sidebar', 'hover')) {
+            document.getElementById("ace-settings-hover").checked = true;
+            $('#sidebar li').addClass('hover').filter('.open').removeClass('open').find('> .submenu').css('display', 'none');
+
+            $('.sidebar[data-sidebar-hover=true]').ace_sidebar_hover('reset')
+            $('.sidebar[data-sidebar-scroll=true]').ace_sidebar_scroll('reset')
+
+            if(ace.vars['old_ie']) ace.helper.redraw($('#sidebar')[0]);
+          }
+
+          // sidebar compact init
+          if (ace.settings.exists('sidebar', 'compact')) {
+            document.getElementById("ace-settings-compact").checked = true;
+            $('#sidebar').addClass('compact');
+            var hover = $('#ace-settings-hover');
+            if( hover.length > 0 ) {
+              hover.removeAttr('checked').trigger('click');
+            }
+
+            if(ace.vars['old_ie']) ace.helper.redraw($('#sidebar')[0], true);
+          }
         })
       });
     }

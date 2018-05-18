@@ -15,34 +15,28 @@
               <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
             </select>
           </div>
-          <span>&nbsp; Choose Skin</span>
+          <span>&nbsp; 选择皮肤</span>
         </div>
 
         <div class="ace-settings-item">
           <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar"/>
-          <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+          <label class="lbl" for="ace-settings-navbar"> 固定导航条</label>
         </div>
 
         <div class="ace-settings-item">
           <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar"/>
-          <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+          <label class="lbl" for="ace-settings-sidebar"> 固定菜单栏</label>
         </div>
 
         <div class="ace-settings-item">
           <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs"/>
-          <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
-        </div>
-
-        <div class="ace-settings-item">
-          <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl"/>
-          <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+          <label class="lbl" for="ace-settings-breadcrumbs"> 固定面包屑</label>
         </div>
 
         <div class="ace-settings-item">
           <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container"/>
           <label class="lbl" for="ace-settings-add-container">
-            Inside
-            <b>.container</b>
+            小屏幕
           </label>
         </div>
 
@@ -51,17 +45,17 @@
       <div class="pull-left width-50">
         <div class="ace-settings-item">
           <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover"/>
-          <label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>
+          <label class="lbl" for="ace-settings-hover"> 悬浮菜单</label>
         </div>
 
         <div class="ace-settings-item">
           <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact"/>
-          <label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>
+          <label class="lbl" for="ace-settings-compact"> 简洁菜单</label>
         </div>
 
         <div class="ace-settings-item">
           <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight"/>
-          <label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>
+          <label class="lbl" for="ace-settings-highlight"> 高亮菜单</label>
         </div>
       </div>
     </div>
@@ -74,6 +68,24 @@
     mounted: function () {
       // 渲染完该组件之后再去加载ace.min.js，不然本组件的事件无法绑定，本组件的事件参考ace.settings.js
       document.write("<script src='/static/ace/dist/js/ace.min.js'>" + "<" + "/script>");
+
+      // navbar fixed init
+      if (ace.settings.exists('navbar', 'fixed')) {
+        ace.settings.navbar_fixed(null, true, true, true);
+      }
+      // sidebar fixed init
+      if (ace.settings.exists('sidebar', 'fixed')) {
+        ace.settings.sidebar_fixed(null, true, true, true);
+      }
+      // breadcrumbs fixed init
+      if (ace.settings.exists('breadcrumbs', 'fixed')) {
+        ace.settings.breadcrumbs_fixed(null, true, true, true);
+      }
+      // main_container fixed init
+      if (ace.settings.exists('main-container', 'fixed')) {
+        ace.settings.main_container_fixed(null, true, true, true);
+      }
+
     }
   }
 </script>
