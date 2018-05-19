@@ -27,6 +27,3 @@
     props: ["menu"]
   }
 </script>
-
-<style scoped>
-</style>
