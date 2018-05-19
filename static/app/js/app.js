@@ -16,11 +16,31 @@ $(function () {
   $.fn.datepicker.defaults.autoclose = true;
   $.fn.datepicker.defaults.todayHighlight = true;
   $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+
+  /**
+   * 序列化表单
+   */
+  $.fn.serializeForm = function () {
+    const json = {};
+    const arr = this.serializeArray();
+    $.each(arr, function () {
+      if (json[this.name]) {
+        if (!json[this.name].push) {
+          json[this.name] = [json[this.name]];
+        }
+        json[this.name].push(this.value || '');
+      } else {
+        json[this.name] = this.value || '';
+      }
+    });
+
+    return json;
+  };
 });
 
 // 提示信息
-var last_gritter;
-var showMessage = function (type, message) {
+let last_gritter;
+const showMessage = function (type, message) {
   if (last_gritter) {
     $.gritter.remove(last_gritter);
   }
@@ -32,7 +52,7 @@ var showMessage = function (type, message) {
   });
 };
 
-var Message = {
+const Message = {
   success: function (message) {
     showMessage('gritter-success', message);
   },
@@ -57,10 +77,10 @@ var Message = {
  */
 function updateMenuActive(hash) {
   //  当前菜单
-  var $menu = $($('a[data-url="' + hash + '"]')[0]).parent("li");
+  const $menu = $($('a[data-url="' + hash + '"]')[0]).parent("li");
 
   // 所有菜单
-  var $all_menus = $menu.parents("ul.nav-list").find("li");
+  const $all_menus = $menu.parents("ul.nav-list").find("li");
 
   // 清除所有菜单状态
   $all_menus.removeClass("open");
@@ -68,7 +88,7 @@ function updateMenuActive(hash) {
   $(".submenu").css("display", "");
 
   // 父菜单
-  var $parent = $menu.parents("li");
+  const $parent = $menu.parents("li");
   if ($parent.length > 0) {
     $parent.addClass("open active");
   }
@@ -81,30 +101,30 @@ function updateMenuActive(hash) {
  * @param hash
  */
 function updateBreadcrumbs(hash) {
-  var $menu = $('a[data-url="' + hash + '"]');
+  const $menu = $('a[data-url="' + hash + '"]');
 
   // 下面这坨代码摘自ace.ajax-content.js
-  var $breadcrumbs = $('.breadcrumb');
+  const $breadcrumbs = $('.breadcrumb');
   if ($breadcrumbs.length > 0 && $breadcrumbs.is(':visible')) {
     $breadcrumbs.find('> li:not(:first-child)').remove();
 
-    var i = 0;
+    let i = 0;
     $menu.parents('.nav li').each(function () {
-      var $link = $(this).find('> a');
+      const $link = $(this).find('> a');
 
-      var $link_clone = $link.clone();
+      const $link_clone = $link.clone();
       $link_clone.find('i,.fa,.glyphicon,.ace-icon,.menu-icon,.badge,.label').remove();
-      var text = $link_clone.text();
+      const text = $link_clone.text();
       $link_clone.remove();
 
-      var href = $link.attr('href');
+      const href = $link.attr('href');
 
-      if (i == 0) {
-        var li = $('<li class="active"></li>').appendTo($breadcrumbs);
-        li.text(text);
+      if (i === 0) {
+        const $li = $('<li class="active"></li>').appendTo($breadcrumbs);
+        $li.text(text);
       } else {
-        var li = $('<li><a /></li>').insertAfter($breadcrumbs.find('> li:first-child'));
-        li.find('a').attr('href', href).text(text);
+        const $li = $('<li><a/></li>').insertAfter($breadcrumbs.find('> li:first-child'));
+        $li.find('a').attr('href', href).text(text);
       }
       i++;
     })
@@ -117,10 +137,10 @@ function updateBreadcrumbs(hash) {
  * @param hash
  */
 function updateTitle(hash) {
-  var $menu = $($('a[data-url="' + hash + '"]')[0]);
-  var title = $.trim($menu.text());
+  const $menu = $($('a[data-url="' + hash + '"]')[0]);
+  const title = $.trim($menu.text());
 
-  if (title != '') {
+  if (title !== '') {
     document.title = title;
   }
 }

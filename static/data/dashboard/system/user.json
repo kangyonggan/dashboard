@@ -1,0 +1,29 @@
+{
+  "respCo": "0000",
+  "respMsg": "操作成功",
+  "rows": [
+    {
+      "avatar": "upload/AVATARac58a655812040189c2b6c568ce03c56.jpg",
+      "createdTime": 1525502957000,
+      "id": 1,
+      "isDeleted": 0,
+      "password": "df9e06125caf2f421535bc725b9c96d329ae377b",
+      "realname": "管理员",
+      "salt": "5cf6b1a302cabcbd",
+      "updatedTime": 1525568580000,
+      "username": "admin"
+    },
+    {
+      "avatar": "",
+      "createdTime": 1525502957000,
+      "id": 2,
+      "isDeleted": 0,
+      "password": "df9e06125caf2f421535bc725b9c96d329ae377b",
+      "realname": "小新",
+      "salt": "5cf6b1a302cabcbd",
+      "updatedTime": 1525502957000,
+      "username": "xiaoxin"
+    }
+  ],
+  "total": 2
+}

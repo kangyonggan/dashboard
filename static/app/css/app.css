@@ -82,3 +82,17 @@ input[readonly].readonly {
     text-align: right !important;
   }
 }
+
+/*table*/
+tr.no-records-found td {
+  padding: 40px 0px !important;
+}
+
+.fixed-table-container {
+  margin-top: 16px;
+}
+
+.fixed-table-loading {
+  color: red;
+  margin-top: 20px;
+}
