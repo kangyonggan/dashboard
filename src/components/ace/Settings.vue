@@ -85,9 +85,42 @@
       if (ace.settings.exists('main-container', 'fixed')) {
         ace.settings.main_container_fixed(null, true, true, true);
       }
-
     }
   }
+
+  $(function () {
+    // skin init
+    const skins = {"#438EB9": "no-skin", "#222A2D": "skin-1", "#C6487E": "skin-2", "#D0D0D0": "skin-3"};
+    const skin = ace.data.get('skin') || 'skin-1';
+    document.getElementsByTagName("body")[0].className = skin;
+    const color = findColor(skin);
+
+    $(".btn-colorpicker").css("background", color);
+    $(".dropdown-colorpicker li a").removeClass("selected");
+    const as = $(".dropdown-colorpicker li a");
+    for (var i = 0; i < as.length; i++) {
+      if ($(as[i]).data("color") === color) {
+        $(as[i]).addClass("selected");
+        break;
+      }
+    }
+
+    /**
+     * 查找皮肤颜色
+     *
+     * @param skin
+     * @returns {*}
+     */
+    function findColor(skin) {
+      for (var color in skins) {
+        if (skins[color] === skin) {
+          return color;
+        }
+      }
+
+      return "#438EB9";
+    }
+  });
 </script>
 
 <style scoped>
