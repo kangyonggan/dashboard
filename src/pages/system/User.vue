@@ -17,7 +17,11 @@
       <Th title="ID" field="id" :sortable="true"/>
       <Th title="用户名" field="username"/>
       <Th title="真实姓名" field="realname"/>
-      <Th title="创建时间" field="createdTime"/>
+      <Th title="逻辑删除" field="isDeleted" formatter="yesNo"/>
+      <Th title="创建时间" field="createdTime" formatter="datetime"/>
+      <Th title="操作" formatter="render">
+        操作
+      </Th>
     </Table>
   </div>
 </template>

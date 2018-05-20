@@ -1,4 +1,32 @@
 $(function () {
+
+  /**
+   * 日期时间格式化
+   *
+   * @param fmt
+   * @returns {*}
+   */
+  Date.prototype.format = function (fmt) {
+    var o = {
+      "M+": this.getMonth() + 1,                 //月份
+      "d+": this.getDate(),                    //日
+      "H+": this.getHours(),                   //小时
+      "m+": this.getMinutes(),                 //分
+      "s+": this.getSeconds(),                 //秒
+      "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+      "S": this.getMilliseconds()             //毫秒
+    };
+    if (/(y+)/.test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+      if (new RegExp("(" + k + ")").test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+      }
+    }
+    return fmt;
+  };
+
   // 日期插件汉化
   $.fn.datepicker.dates['zh-CN'] = {
     days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
@@ -154,4 +182,35 @@ function updateState(hash) {
   updateBreadcrumbs(hash);
   updateMenuActive(hash);
   updateTitle(hash);
+}
+
+/**
+ * 日期格式化
+ *
+ * @param value
+ */
+function date(value) {
+  let date = new Date();
+  date.setTime(value);
+  return date.format("yyyy-MM-dd");
+}
+
+/**
+ * 日期时间格式化
+ *
+ * @param value
+ */
+function datetime(value) {
+  let date = new Date();
+  date.setTime(value);
+  return date.format("yyyy-MM-dd HH:mm:ss");
+}
+
+/**
+ * 是/否格式化
+ *
+ * @param value
+ */
+function yesNo(value) {
+  return value === '1' ? '是' : '否';
 }
