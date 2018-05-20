@@ -13,16 +13,7 @@
       </Actions>
     </Form>
 
-    <Table url="dashboard/system/user">
-      <Th title="ID" field="id" :sortable="true"/>
-      <Th title="用户名" field="username"/>
-      <Th title="真实姓名" field="realname"/>
-      <Th title="逻辑删除" field="isDeleted" formatter="yesNo"/>
-      <Th title="创建时间" field="createdTime" formatter="datetime"/>
-      <Th title="操作" formatter="render">
-        操作
-      </Th>
-    </Table>
+    <Table url="dashboard/system/user" :fields="fields"/>
   </div>
 </template>
 
@@ -32,10 +23,33 @@
   import Actions from "../../components/form/Actions.vue";
   import Button from "../../components/form/Button.vue";
   import Table from "../../components/table/Table.vue";
-  import Th from "../../components/table/Th.vue";
 
   export default {
-    components: {Form, Input, Actions, Button, Table, Th},
-    name: 'SystemUser'
+    components: {Form, Input, Actions, Button, Table},
+    name: 'SystemUser',
+    data() {
+      return {
+        fields: [{
+          title: 'ID',
+          name: 'id',
+          hiddenXs: true
+        }, {
+          title: "用户名",
+          name: 'username'
+        }, {
+          title: "真实姓名",
+          name: 'realname'
+        }, {
+          title: "逻辑删除",
+          name: 'isDeleted',
+          format: yesNo
+        }, {
+          title: "创建时间",
+          name: 'createdTime',
+          format: datetime,
+          hiddenXs: true
+        }]
+      }
+    }
   }
 </script>
