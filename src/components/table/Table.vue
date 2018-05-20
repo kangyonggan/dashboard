@@ -8,8 +8,8 @@
       </thead>
 
       <tbody>
-      <tr class="no-records-found" v-if="pageInfo.size === 0">
-        <td colspan="20">没有找到匹配的记录</td>
+      <tr class="no-records-found" v-if="!pageInfo.size">
+        <td colspan="20">{{empty}}</td>
       </tr>
       <tr v-for="item in pageInfo.list">
         <td v-for="field in fields" v-show="!field.hidden" :class="{'hidden-xs': field.hiddenXs}">
@@ -83,26 +83,41 @@
         required: false,
         type: Boolean,
         default: true
-      }
+      },
+      form: {
+        required: false,
+        type: String,
+        default: 'form'
+      },
     },
     data() {
       return {
+        empty: "没有找到匹配的记录",
         pageInfo: {}
       }
     },
     mounted: function () {
-      let that = this;
-      this.get(this.url, function (data) {
-        that.pageInfo = data.pageInfo;
-      });
+      this.load(this.url);
     },
     methods: {
-      jump: function (pageNum) {
+      load: function (url) {
         let that = this;
-        this.get(this.url + "?pageNum=" + pageNum, function (data) {
+        that.pageInfo = {};
+        that.empty = "正在加载数据，请稍后...";
+        this.get(url, function (data) {
           that.pageInfo = data.pageInfo;
           scroll(0, 0);
+        }, function () {
+          that.empty = "数据加载失败";
         });
+      },
+      jump: function (pageNum) {
+        const params = $("#" + that.form).serialize();
+        this.load(this.url + "?pageNum=" + pageNum + "&" + params);
+      },
+      query: function (e) {
+        const params = $(e.target).parents("form").serialize();
+        this.load(this.url + "?" + params);
       }
     }
   }

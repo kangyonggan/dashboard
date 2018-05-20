@@ -7,13 +7,13 @@
       <Input name="endDate" label="创建结束日期" type="date"/>
 
       <Actions>
-        <Button name="查询" icon="fa-search" clazz="btn-purple" table="table"/>
+        <Button name="查询" icon="fa-search" clazz="btn-purple" :parentRefs="$refs"/>
         <Button name="清除" icon="fa-undo" clazz="btn-warning" type="reset"/>
         <Button name="新增用户" icon="fa-plus"/>
       </Actions>
     </Form>
 
-    <Table url="dashboard/system/user" :fields="fields"/>
+    <Table ref="table" url="dashboard/system/user" :fields="fields"/>
   </div>
 </template>
 

@@ -13,7 +13,8 @@
     props: {
       id: {
         required: false,
-        type: String
+        type: String,
+        default: 'form'
       },
       method: {
         required: false,

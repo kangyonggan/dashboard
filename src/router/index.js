@@ -130,26 +130,43 @@ function isLogin() {
  * get请求
  *
  * @param url
+ * @param success
+ * @param failure
  */
-function get(url, callback) {
+function get(url, success, failure) {
   url = process.env.API_ROOT + url;
   if (process.env.NODE_ENV === 'development') {
-    url += ".json";
+    let index = url.indexOf("?");
+    if (index != -1) {
+      url = url.substring(0, index) + ".json" + url.substring(index);
+    } else {
+      url += ".json";
+    }
   }
+
   axios.get(url).then(res => {
     if (res.status === 200) {
       if (res.data.respCo === '0000') {
-        if (callback) {
-          callback(res.data);
+        if (success) {
+          success(res.data);
         }
       } else {
         Message.error(res.data.respMsg);
+        if (failure) {
+          failure();
+        }
       }
     } else {
       Message.error("网络异常，请稍后重试！");
+      if (failure) {
+        failure();
+      }
     }
   }).catch(error => {
     Message.error(error);
+    if (failure) {
+      failure();
+    }
   });
 };
 

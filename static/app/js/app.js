@@ -1,70 +1,47 @@
-$(function () {
-
-  /**
-   * 日期时间格式化
-   *
-   * @param fmt
-   * @returns {*}
-   */
-  Date.prototype.format = function (fmt) {
-    var o = {
-      "M+": this.getMonth() + 1,                 //月份
-      "d+": this.getDate(),                    //日
-      "H+": this.getHours(),                   //小时
-      "m+": this.getMinutes(),                 //分
-      "s+": this.getSeconds(),                 //秒
-      "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-      "S": this.getMilliseconds()             //毫秒
-    };
-    if (/(y+)/.test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+/**
+ * 日期时间格式化
+ *
+ * @param fmt
+ * @returns {*}
+ */
+Date.prototype.format = function (fmt) {
+  var o = {
+    "M+": this.getMonth() + 1,                 //月份
+    "d+": this.getDate(),                    //日
+    "H+": this.getHours(),                   //小时
+    "m+": this.getMinutes(),                 //分
+    "s+": this.getSeconds(),                 //秒
+    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+    "S": this.getMilliseconds()             //毫秒
+  };
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  }
+  for (var k in o) {
+    if (new RegExp("(" + k + ")").test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     }
-    for (var k in o) {
-      if (new RegExp("(" + k + ")").test(fmt)) {
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-      }
-    }
-    return fmt;
-  };
+  }
+  return fmt;
+};
 
-  // 日期插件汉化
-  $.fn.datepicker.dates['zh-CN'] = {
-    days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-    daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-    daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
-    months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    today: "今天",
-    suffix: [],
-    meridiem: ["上午", "下午"]
-  };
+// 日期插件汉化
+$.fn.datepicker.dates['zh-CN'] = {
+  days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+  daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+  daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+  months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+  monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+  today: "今天",
+  suffix: [],
+  meridiem: ["上午", "下午"]
+};
 
-  // 日期插件通用配置
-  $.fn.datepicker.defaults.language = "zh-CN";
-  $.fn.datepicker.defaults.autoclose = true;
-  $.fn.datepicker.defaults.todayHighlight = true;
-  $.fn.datepicker.defaults.format = "yyyy-mm-dd";
-
-  /**
-   * 序列化表单
-   */
-  $.fn.serializeForm = function () {
-    const json = {};
-    const arr = this.serializeArray();
-    $.each(arr, function () {
-      if (json[this.name]) {
-        if (!json[this.name].push) {
-          json[this.name] = [json[this.name]];
-        }
-        json[this.name].push(this.value || '');
-      } else {
-        json[this.name] = this.value || '';
-      }
-    });
-
-    return json;
-  };
-});
+// 日期插件通用配置
+$.fn.datepicker.defaults.language = "zh-CN";
+$.fn.datepicker.defaults.autoclose = true;
+$.fn.datepicker.defaults.todayHighlight = true;
+$.fn.datepicker.defaults.format = "yyyy-mm-dd";
 
 // 提示信息
 let last_gritter;
