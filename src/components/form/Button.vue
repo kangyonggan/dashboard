@@ -35,13 +35,9 @@
         required: false,
         type: Function
       },
-      tableRef: {
+      table: {
         required: false,
         type: String
-      },
-      parentRefs: {
-        required: false,
-        type: Object
       },
       modal: {
         required: false,
@@ -53,9 +49,22 @@
         if (this.click) {
           e.preventDefault();
           this.click(e);
-        } else if (this.parentRefs && this.tableRef && this.parentRefs[this.tableRef]) {
-          e.preventDefault();
-          this.parentRefs[this.tableRef].query(e);
+        } else if (this.table) {
+          let ref = this.getTableRef(this.$parent);
+          if (ref) {
+            e.preventDefault();
+            ref.query(e);
+          }
+        }
+      },
+      getTableRef: function ($parent) {
+        if (!$parent) {
+          return;
+        }
+        if ($parent.$refs[this.table]) {
+          return $parent.$refs[this.table];
+        } else {
+          return this.getTableRef($parent.$parent);
         }
       }
     }

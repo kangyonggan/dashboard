@@ -7,7 +7,7 @@
       <Input name="endDate" label="创建结束日期" type="date"/>
 
       <Actions>
-        <Button name="查询" icon="fa-search" clazz="btn-sm btn-purple" :parentRefs="$refs" tableRef="table"/>
+        <Button name="查询" icon="fa-search" clazz="btn-sm btn-purple" table="table"/>
         <Button name="清除" icon="fa-undo" clazz="btn-sm btn-default" type="reset"/>
         <Button name="新增用户" icon="fa-plus" clazz="btn-sm btn-skin" modal="formModal"/>
       </Actions>

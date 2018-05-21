@@ -76,8 +76,7 @@
       },
       id: {
         required: false,
-        type: String,
-        default: 'table'
+        type: String
       },
       pagination: {
         required: false,
