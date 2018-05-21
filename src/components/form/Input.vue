@@ -4,7 +4,8 @@
       <label :class="{'required': required}">{{label}}</label>
     </div>
     <div class="col-md-7 controls">
-      <input :type="type != 'date' ? type : 'text'" :id="name" :name="name" :readonly="readonly || type==='date'" :value="value"
+      <input :type="type != 'date' ? type : 'text'" :id="uuid" :name="name" :readonly="readonly || type==='date'"
+             :value="value"
              :class="{'form-control': true, 'readonly': readonly || type==='date', 'date-picker': type==='date'}"
              :placeholder="placeholder?placeholder:'请输入' + label"/>
     </div>
@@ -21,6 +22,10 @@
       },
       label: {
         required: true,
+        type: String
+      },
+      id: {
+        required: false,
         type: String
       },
       type: {
@@ -42,8 +47,16 @@
         type: Boolean
       }
     },
+    data() {
+      return {
+        uuid: this.uuid("ID")
+      }
+    },
     mounted: function () {
-      const $input = $("#" + this.name);
+      if (this.id) {
+        this.uuid = this.id;
+      }
+      const $input = $("#" + this.uuid);
       if (this.type === 'date') {
         $input.datepicker();
       }

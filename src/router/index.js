@@ -118,6 +118,7 @@ function findRoute(url) {
 // 定义全局方法
 Vue.prototype.get = get;
 Vue.prototype.isLogin = isLogin;
+Vue.prototype.uuid = uuid;
 
 /**
  * 判断是否是登录状态
@@ -168,6 +169,28 @@ function get(url, success, failure) {
       failure();
     }
   });
-};
+}
+
+/**
+ * 生成随机串
+ *
+ * @param prefix 前缀
+ * @returns {string|*}
+ */
+function uuid(prefix) {
+  prefix = prefix || '';
+  let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+  let uuid = [], len = 0;
+  for (let i = 0; i < prefix.length; i++) {
+    uuid[len++] = prefix[i];
+  }
+
+  for (let i = 0; i < chars.length; i++) {
+    let r = 0 | Math.random() * 16;
+    uuid[len++] = chars[(i === 19) ? (r & 0x3) | 0x8 : r];
+  }
+
+  return uuid.join('');
+}
 
 
