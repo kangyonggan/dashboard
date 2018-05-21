@@ -14,7 +14,7 @@
     </Form>
 
     <Table ref="table" url="dashboard/system/user" form="searchForm">
-      <template slot="th">
+      <template slot="ths">
         <th>ID</th>
         <th>用户名</th>
         <th>真实姓名</th>
@@ -23,25 +23,23 @@
         <th>操作</th>
       </template>
 
-      <template slot-scope="app" slot="td">
-        <tr v-for="(item, index) in app.list">
-          <td>{{item.id}}</td>
-          <td>{{item.username}}</td>
-          <td>{{item.realname}}</td>
-          <td>{{item.isDeleted}}</td>
-          <td>{{item.createdTime}}</td>
-          <td>
-            <Button name="编辑" :data-index="index" clazz="btn-xs btn-inverse" modal="formModal" :click="edit"/>
-          </td>
-        </tr>
+      <template slot-scope="app" slot="tds">
+        <td>{{app.item.id}}</td>
+        <td>{{app.item.username}}</td>
+        <td>{{app.item.realname}}</td>
+        <td>{{app.item.isDeleted}}</td>
+        <td>{{app.item.createdTime}}</td>
+        <td>
+          <Button name="编辑" :data-index="app.index" modal="formModal" clazz="btn-xs btn-inverse" :click="edit"/>
+        </td>
       </template>
     </Table>
 
     <Modal id="formModal" :title="user.id ? '编辑用户' : '新增用户'" :static="true">
       <Form id="userForm" method="post" :action="'dashboard/system/user/' + user.id ? 'update' : 'save'" slot="body">
-        <Input name="username" label="用户名" :value="user.username" :required="true"/>
+        <Input name="username" label="用户名" :value="user.username" :required="true" :readonly="!!user.id"/>
         <Input name="realname" label="真实姓名" :value="user.realname" :required="true"/>
-        <Input name="password" label="密码" type="password" :value="user.password" :required="true"/>
+        <Input v-if="!user.id" name="password" label="密码" type="password" :value="user.password" :required="true"/>
         <Select2 name="roleCodes" label="角色" :value="user.roleCodes" placeholder="请选择角色"
                  url="dashboard/system/user/roles"
                  code="code" disp="name"/>
@@ -68,14 +66,18 @@
     name: 'SystemUser',
     data() {
       return {
-        user: {}
+        user: {},
+        roles: []
       }
     },
     methods: {
       edit: function (e) {
-        this.user = {};
-        this.user = this.$refs.table.getItem($(e.target).data("index"));
-        console.log(this.user);
+        let user = this.$refs.table.getItem($(e.target).data("index"));
+        let that = this;
+        this.get("dashboard/system/user/" + user.username, function (data) {
+          that.user = data.user;
+          that.roles = data.roles;
+        });
       }
     }
   }

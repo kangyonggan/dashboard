@@ -3,7 +3,7 @@
     <table :id="id" class="table table-striped table-bordered table-hover">
       <thead>
       <tr>
-        <slot name="th"></slot>
+        <slot name="ths"></slot>
       </tr>
       </thead>
 
@@ -11,13 +11,16 @@
       <tr class="no-records-found" v-if="!pageInfo.size">
         <td colspan="20">{{empty}}</td>
       </tr>
-      <slot name="td" v-bind:list="pageInfo.list" v-else></slot>
+      <tr v-else v-for="(item, index) in pageInfo.list">
+        <slot name="tds" v-bind:item="item" v-bind:index="index"></slot>
+      </tr>
       </tbody>
     </table>
 
     <div class="pull-right hidden-xs" v-if="pagination">
       <ul class="pagination">
-        <li><a href="javascript:" class="page-info">第 {{pageInfo.startRow}}~{{pageInfo.endRow}} 条, 共 {{pageInfo.total}} 条,
+        <li><a href="javascript:" class="page-info">第 {{pageInfo.startRow}}~{{pageInfo.endRow}} 条, 共 {{pageInfo.total}}
+          条,
           第 {{pageInfo.pageNum}} 页,
           共 {{pageInfo.pages}} 页</a></li>
       </ul>
