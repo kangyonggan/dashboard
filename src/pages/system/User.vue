@@ -15,8 +15,8 @@
 
     <Table ref="table" url="dashboard/system/user" :fields="fields" form="searchForm"/>
 
-    <Modal id="formModal" title="新增用户">
-      <Form slot="body">
+    <Modal id="formModal" title="新增用户" :static="true">
+      <Form id="userForm" method="post" action="dashboard/system/user/save" slot="body">
         <Input name="username" label="用户名"/>
         <Input name="realname" label="真实姓名"/>
         <Input name="password" label="密码" type="password"/>
@@ -24,7 +24,7 @@
       </Form>
 
       <template slot="actions">
-        <Button name="提交" icon="fa-check" clazz="btn-skin"/>
+        <Button name="提交" icon="fa-check" clazz="btn-skin" form="userForm"/>
       </template>
     </Modal>
   </div>

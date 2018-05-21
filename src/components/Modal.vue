@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" :id="id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal fade" :id="id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" :data-backdrop="static ? 'static' : ''">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -29,6 +29,11 @@
       title: {
         required: true,
         type: String
+      },
+      static: {
+        required: false,
+        type: Boolean,
+        default: false
       }
     }
   }

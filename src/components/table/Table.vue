@@ -99,24 +99,33 @@
       this.load(this.url);
     },
     methods: {
-      load: function (url) {
+      load: function (url, $btn) {
         let that = this;
         that.pageInfo = {};
         that.empty = "正在加载数据，请稍后...";
         this.get(url, function (data) {
           that.pageInfo = data.pageInfo;
           scroll(0, 0);
+          if ($btn) {
+            $btn.button('reset');
+          }
         }, function () {
           that.empty = "数据加载失败";
+          if ($btn) {
+            $btn.button('reset');
+          }
         });
       },
       jump: function (pageNum) {
         const params = $("#" + that.form).serialize();
         this.load(this.url + "?pageNum=" + pageNum + "&" + params);
       },
-      query: function (e) {
-        const params = $(e.target).parents("form").serialize();
-        this.load(this.url + "?" + params);
+      query: function ($btn, $form) {
+        let params = "";
+        if ($form) {
+          params += "?" + $form.serialize();
+        }
+        this.load(this.url + params, $btn);
       }
     }
   }

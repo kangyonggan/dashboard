@@ -1,5 +1,7 @@
 <template>
-  <button :id="id" :class="'btn ' + clazz" :type="type" @click="func($event)" :data-toggle="modal ? 'modal' : ''" :data-target="modal ? '#' + modal : ''">
+  <button :id="id" :class="'btn ' + clazz" :type="type" @click="func($event)"
+          :data-toggle="modal ? 'modal' : ''" :data-target="modal ? '#' + modal : ''"
+          :data-loading-text="'正在' + name + '...'">
     <i :class="'ace-icon fa ' + icon" v-if="icon"></i>
     {{name}}
   </button>
@@ -42,19 +44,49 @@
       modal: {
         required: false,
         type: String
+      },
+      form: {
+        required: false,
+        type: String
       }
     },
     methods: {
       func: function (e) {
+        let $btn = $(e.target);
         if (this.click) {
+          // 自定义事件优先执行
           e.preventDefault();
           this.click(e);
         } else if (this.table) {
+          // 绑定了table
           let ref = this.getTableRef(this.$parent);
           if (ref) {
             e.preventDefault();
-            ref.query(e);
+            let $form = $btn.parents("form");
+            if (this.form) {
+              $form = $("#" + this.form);
+            }
+
+            $btn.button('loading');
+            ref.query($btn, $form);
           }
+        } else if (this.form) {
+          // 绑定了form，则提交form
+          let $form = $("#" + this.form);
+
+          $btn.button('loading');
+          this.post($form.attr("action"), {"username": "admin"}, function () {
+            $btn.button('reset');
+            if ($btn.parents(".modal")) {
+              $btn.parents(".modal").modal('hide');
+            }
+          }, function () {
+            $btn.button('reset');
+          });
+
+        } else if ($btn.parents("form")) {
+          // 看看有没有父form，有则提交
+
         }
       },
       getTableRef: function ($parent) {

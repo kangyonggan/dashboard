@@ -117,6 +117,7 @@ function findRoute(url) {
 
 // 定义全局方法
 Vue.prototype.get = get;
+Vue.prototype.post = post;
 Vue.prototype.isLogin = isLogin;
 Vue.prototype.uuid = uuid;
 
@@ -146,6 +147,58 @@ function get(url, success, failure) {
   }
 
   axios.get(url).then(res => {
+    if (res.status === 200) {
+      if (res.data.respCo === '0000') {
+        if (success) {
+          success(res.data);
+        }
+      } else {
+        Message.error(res.data.respMsg);
+        if (failure) {
+          failure();
+        }
+      }
+    } else {
+      Message.error("网络异常，请稍后重试！");
+      if (failure) {
+        failure();
+      }
+    }
+  }).catch(error => {
+    Message.error(error);
+    if (failure) {
+      failure();
+    }
+  });
+}
+
+/**
+ * post请求
+ *
+ * @param url
+ * @param params
+ * @param success
+ * @param failure
+ */
+function post(url, params, success, failure) {
+  if (process.env.NODE_ENV === 'development') {
+    url = "http://localhost:8080/" + url;
+  } else {
+    url = process.env.API_ROOT + url;
+  }
+
+  let param = new FormData();
+  for (let key in params) {
+    if (key) {
+      param.append(key, params[key]);
+    }
+  }
+
+  axios.post(url, param, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(res => {
     if (res.status === 200) {
       if (res.data.respCo === '0000') {
         if (success) {

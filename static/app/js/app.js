@@ -1,3 +1,14 @@
+$(function () {
+  // 关闭时清除模态框的数据
+  $(document).on('hidden.bs.modal', '.modal', function () {
+    $(this).removeData('bs.modal');
+    let $form = $(this).find("form");
+    if ($form.length > 0 && $form[0]) {
+      $form[0].reset();
+    }
+  });
+});
+
 /**
  * 日期时间格式化
  *
