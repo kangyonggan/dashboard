@@ -23,9 +23,8 @@
     name: 'Modal',
     props: {
       id: {
-        required: false,
-        type: String,
-        default: "modal"
+        required: true,
+        type: String
       },
       title: {
         required: true,

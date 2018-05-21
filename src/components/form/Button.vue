@@ -1,6 +1,6 @@
 <template>
-  <button :id="id" :class="'btn ' + clazz" :data-table-id="tableId" :type="type" @click="func($event)" :data-toggle="modal ? modal : ''" :data-target="modal ? '#' + modal : ''">
-    <i :class="'ace-icon fa ' + icon" v-if="icon != ''"></i>
+  <button :id="id" :class="'btn ' + clazz" :type="type" @click="func($event)" :data-toggle="modal ? 'modal' : ''" :data-target="modal ? '#' + modal : ''">
+    <i :class="'ace-icon fa ' + icon" v-if="icon"></i>
     {{name}}
   </button>
 </template>
@@ -22,27 +22,22 @@
         type: String,
         default: 'btn-default'
       },
-      tableId: {
-        required: false,
-        type: String
-      },
       icon: {
         required: false,
-        type: String,
-        default: ''
+        type: String
       },
       type: {
         required: false,
-        type: String
+        type: String,
+        default: 'button'
       },
       click: {
         required: false,
         type: Function
       },
-      table: {
+      tableRef: {
         required: false,
-        type: String,
-        default: 'table'
+        type: String
       },
       parentRefs: {
         required: false,
@@ -58,9 +53,9 @@
         if (this.click) {
           e.preventDefault();
           this.click(e);
-        } else if (this.parentRefs && this.parentRefs[this.table]) {
+        } else if (this.parentRefs && this.tableRef && this.parentRefs[this.tableRef]) {
           e.preventDefault();
-          this.parentRefs[this.table].query(e);
+          this.parentRefs[this.tableRef].query(e);
         }
       }
     }

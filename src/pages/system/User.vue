@@ -7,16 +7,16 @@
       <Input name="endDate" label="创建结束日期" type="date"/>
 
       <Actions>
-        <Button name="查询" icon="fa-search" clazz="btn-sm btn-purple" :parentRefs="$refs"/>
+        <Button name="查询" icon="fa-search" clazz="btn-sm btn-purple" :parentRefs="$refs" tableRef="table"/>
         <Button name="清除" icon="fa-undo" clazz="btn-sm btn-default" type="reset"/>
-        <Button name="新增用户" icon="fa-plus" clazz="btn-sm btn-skin" modal="modal"/>
+        <Button name="新增用户" icon="fa-plus" clazz="btn-sm btn-skin" modal="formModal"/>
       </Actions>
     </Form>
 
-    <Table ref="table" url="dashboard/system/user" :fields="fields"/>
+    <Table ref="table" url="dashboard/system/user" :fields="fields" form="searchForm"/>
 
-    <Modal title="新增用户">
-      <Form id="userForm" slot="body">
+    <Modal id="formModal" title="新增用户">
+      <Form slot="body">
         <Input name="username" label="用户名"/>
         <Input name="realname" label="真实姓名"/>
         <Input name="password" label="密码" type="password"/>
