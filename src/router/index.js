@@ -238,7 +238,7 @@ function uuid(prefix) {
     uuid[len++] = prefix[i];
   }
 
-  for (let i = 0; i < chars.length; i++) {
+  for (let i = 0; i < 16; i++) {
     let r = 0 | Math.random() * 16;
     uuid[len++] = chars[(i === 19) ? (r & 0x3) | 0x8 : r];
   }

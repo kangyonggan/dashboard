@@ -36,7 +36,8 @@
         required: false
       },
       placeholder: {
-        required: false
+        required: false,
+        type: String
       },
       required: {
         default: false,

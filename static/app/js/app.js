@@ -5,7 +5,33 @@ $(function () {
     let $form = $(this).find("form");
     if ($form.length > 0 && $form[0]) {
       $form[0].reset();
+      $form.find(".chosen-select").val('').trigger("chosen:updated");
     }
+  });
+
+  /**
+   * 模态框显示时才去初始化chosen，否则chosen宽度为0，因为这时modal还没显示，chosen用的是父宽度
+   */
+  $(document).on("shown.bs.modal", '.modal', function () {
+    $(".chosen-select").chosen({
+      no_results_text: "没有匹配的结果",
+      placeholder_text: "请选择一项"
+    });
+    $("div.chosen-container-multi ul.chosen-choices li.search-field input[type=text]").css({"height": "30px"});
+  });
+
+  // 让chosen select支持响应式
+  $(window).off('resize.chosen').on('resize.chosen', function () {
+    $('.chosen-select').each(function () {
+      $(this).next().css({'width': $(this).parent().width()});
+    })
+  }).trigger('resize.chosen');
+
+  $(document).on('settings.ace.chosen', function (e, event_name) {
+    if (event_name !== 'sidebar_collapsed') return;
+    $('.chosen-select').each(function () {
+      $(this).next().css({'width': $(this).parent().width()});
+    })
   });
 });
 

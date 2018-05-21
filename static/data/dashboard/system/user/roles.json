@@ -1,0 +1,14 @@
+{
+  "respCo": "0000",
+  "respMsg": "操作成功",
+  "list": [
+    {
+      "code": "ROLE_ADMIN",
+      "name": "管理员"
+    },
+    {
+      "code": "ROLE_USER",
+      "name": "普通用户"
+    }
+  ]
+}

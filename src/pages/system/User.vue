@@ -17,10 +17,10 @@
 
     <Modal id="formModal" title="新增用户" :static="true">
       <Form id="userForm" method="post" action="dashboard/system/user/save" slot="body">
-        <Input name="username" label="用户名"/>
-        <Input name="realname" label="真实姓名"/>
-        <Input name="password" label="密码" type="password"/>
-        <Input name="roleCodes" label="角色"/>
+        <Input name="username" label="用户名" :required="true"/>
+        <Input name="realname" label="真实姓名" :required="true"/>
+        <Input name="password" label="密码" type="password" :required="true"/>
+        <Select2 name="roleCodes" label="角色" placeholder="请选择角色" url="dashboard/system/user/roles" code="code" disp="name"/>
       </Form>
 
       <template slot="actions">
@@ -37,9 +37,10 @@
   import Button from "../../components/form/Button.vue";
   import Table from "../../components/table/Table.vue";
   import Modal from "../../components/Modal.vue";
+  import Select2 from "../../components/form/Select2.vue";
 
   export default {
-    components: {Form, Input, Actions, Button, Table, Modal},
+    components: {Form, Input, Actions, Button, Table, Modal, Select2},
     name: 'SystemUser',
     data() {
       return {

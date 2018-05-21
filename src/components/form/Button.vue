@@ -58,23 +58,22 @@
           e.preventDefault();
           this.click(e);
         } else if (this.table) {
-          // 绑定了table
-          let ref = this.getTableRef(this.$parent);
-          if (ref) {
-            e.preventDefault();
-            let $form = $btn.parents("form");
-            if (this.form) {
-              $form = $("#" + this.form);
-            }
+          e.preventDefault();
 
+          let ref = this.getTableRef(this.$parent);
+          let $form = this.getForm($btn);
+
+          if (ref) {
+            // 如果绑定了table， 则提交查询后渲染table
             $btn.button('loading');
             ref.query($btn, $form);
           }
         } else if (this.form) {
-          // 绑定了form，则提交form
-          let $form = $("#" + this.form);
-
+          e.preventDefault();
+          let $form = this.getForm($btn);
+          // 如果绑定form，则提交form
           $btn.button('loading');
+          // TODO form参数
           this.post($form.attr("action"), {"username": "admin"}, function () {
             $btn.button('reset');
             if ($btn.parents(".modal")) {
@@ -83,10 +82,12 @@
           }, function () {
             $btn.button('reset');
           });
-
-        } else if ($btn.parents("form")) {
-          // 看看有没有父form，有则提交
-
+        } else if (this.type === 'reset') {
+          // 重置
+          let $form = this.getForm($btn);
+          if ($form) {
+            $form.find(".chosen-select").val('').trigger("chosen:updated");
+          }
         }
       },
       getTableRef: function ($parent) {
@@ -98,6 +99,14 @@
         } else {
           return this.getTableRef($parent.$parent);
         }
+      },
+      getForm: function ($btn) {
+        let $form = $btn.parents("form");
+        if (this.form) {
+          $form = $("#" + this.form);
+        }
+
+        return $form;
       }
     }
   }
