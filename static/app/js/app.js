@@ -197,34 +197,3 @@ function updateState(hash) {
   updateMenuActive(hash);
   updateTitle(hash);
 }
-
-/**
- * 日期格式化
- *
- * @param value
- */
-function date(value) {
-  let date = new Date();
-  date.setTime(value);
-  return date.format("yyyy-MM-dd");
-}
-
-/**
- * 日期时间格式化
- *
- * @param value
- */
-function datetime(value) {
-  let date = new Date();
-  date.setTime(value);
-  return date.format("yyyy-MM-dd HH:mm:ss");
-}
-
-/**
- * 是/否格式化
- *
- * @param value
- */
-function yesNo(value) {
-  return value === '1' ? '是' : '否';
-}

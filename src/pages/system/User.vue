@@ -13,14 +13,38 @@
       </Actions>
     </Form>
 
-    <Table ref="table" url="dashboard/system/user" :fields="fields" form="searchForm"/>
+    <Table ref="table" url="dashboard/system/user" form="searchForm">
+      <template slot="th">
+        <th>ID</th>
+        <th>用户名</th>
+        <th>真实姓名</th>
+        <th>逻辑删除</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </template>
 
-    <Modal id="formModal" title="新增用户" :static="true">
-      <Form id="userForm" method="post" action="dashboard/system/user/save" slot="body">
-        <Input name="username" label="用户名" :required="true"/>
-        <Input name="realname" label="真实姓名" :required="true"/>
-        <Input name="password" label="密码" type="password" :required="true"/>
-        <Select2 name="roleCodes" label="角色" placeholder="请选择角色" url="dashboard/system/user/roles" code="code" disp="name"/>
+      <template slot-scope="app" slot="td">
+        <tr v-for="(item, index) in app.list">
+          <td>{{item.id}}</td>
+          <td>{{item.username}}</td>
+          <td>{{item.realname}}</td>
+          <td>{{item.isDeleted}}</td>
+          <td>{{item.createdTime}}</td>
+          <td>
+            <Button name="编辑" :data-index="index" clazz="btn-xs btn-inverse" modal="formModal" :click="edit"/>
+          </td>
+        </tr>
+      </template>
+    </Table>
+
+    <Modal id="formModal" :title="user.id ? '编辑用户' : '新增用户'" :static="true">
+      <Form id="userForm" method="post" :action="'dashboard/system/user/' + user.id ? 'update' : 'save'" slot="body">
+        <Input name="username" label="用户名" :value="user.username" :required="true"/>
+        <Input name="realname" label="真实姓名" :value="user.realname" :required="true"/>
+        <Input name="password" label="密码" type="password" :value="user.password" :required="true"/>
+        <Select2 name="roleCodes" label="角色" :value="user.roleCodes" placeholder="请选择角色"
+                 url="dashboard/system/user/roles"
+                 code="code" disp="name"/>
       </Form>
 
       <template slot="actions">
@@ -44,26 +68,14 @@
     name: 'SystemUser',
     data() {
       return {
-        fields: [{
-          title: 'ID',
-          name: 'id',
-          hiddenXs: true
-        }, {
-          title: "用户名",
-          name: 'username'
-        }, {
-          title: "真实姓名",
-          name: 'realname'
-        }, {
-          title: "逻辑删除",
-          name: 'isDeleted',
-          format: yesNo
-        }, {
-          title: "创建时间",
-          name: 'createdTime',
-          format: datetime,
-          hiddenXs: true
-        }]
+        user: {}
+      }
+    },
+    methods: {
+      edit: function (e) {
+        this.user = {};
+        this.user = this.$refs.table.getItem($(e.target).data("index"));
+        console.log(this.user);
       }
     }
   }

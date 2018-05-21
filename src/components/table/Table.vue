@@ -3,7 +3,7 @@
     <table :id="id" class="table table-striped table-bordered table-hover">
       <thead>
       <tr>
-        <th v-for="field in fields" v-show="!field.hidden" :class="{'hidden-xs': field.hiddenXs}">{{field.title}}</th>
+        <slot name="th"></slot>
       </tr>
       </thead>
 
@@ -11,12 +11,7 @@
       <tr class="no-records-found" v-if="!pageInfo.size">
         <td colspan="20">{{empty}}</td>
       </tr>
-      <tr v-for="item in pageInfo.list">
-        <td v-for="field in fields" v-show="!field.hidden" :class="{'hidden-xs': field.hiddenXs}">
-          <span v-if="field.format">{{field.format(item[field.name], field.name, item)}}</span>
-          <span v-else>{{item[field.name]}}</span>
-        </td>
-      </tr>
+      <slot name="td" v-bind:list="pageInfo.list" v-else></slot>
       </tbody>
     </table>
 
@@ -70,10 +65,6 @@
         required: true,
         type: String
       },
-      fields: {
-        required: true,
-        type: Array
-      },
       id: {
         required: false,
         type: String
@@ -126,6 +117,9 @@
           params += "?" + $form.serialize();
         }
         this.load(this.url + params, $btn);
+      },
+      getItem: function (index) {
+        return this.pageInfo.list[index];
       }
     }
   }
