@@ -9,7 +9,7 @@
       <Actions>
         <Button name="查询" icon="fa-search" clazz="btn-sm btn-purple" table="table"/>
         <Button name="清除" icon="fa-undo" clazz="btn-sm btn-default" type="reset"/>
-        <Button name="新增用户" icon="fa-plus" clazz="btn-sm btn-skin" modal="formModal"/>
+        <Button name="新增用户" icon="fa-plus" clazz="btn-sm btn-skin" modal="formModal" :click="create"/>
       </Actions>
     </Form>
 
@@ -27,8 +27,8 @@
         <td>{{app.item.id}}</td>
         <td>{{app.item.username}}</td>
         <td>{{app.item.realname}}</td>
-        <td>{{app.item.isDeleted}}</td>
-        <td>{{app.item.createdTime}}</td>
+        <td>{{app.item.isDeleted | YesNo}}</td>
+        <td>{{app.item.createdTime | DateTime}}</td>
         <td>
           <Button name="编辑" :data-index="app.index" modal="formModal" clazz="btn-xs btn-inverse" :click="edit"/>
         </td>
@@ -36,13 +36,11 @@
     </Table>
 
     <Modal id="formModal" :title="user.id ? '编辑用户' : '新增用户'" :static="true">
-      <Form id="userForm" method="post" :action="'dashboard/system/user/' + user.id ? 'update' : 'save'" slot="body">
-        <Input name="username" label="用户名" :value="user.username" :required="true" :readonly="!!user.id"/>
-        <Input name="realname" label="真实姓名" :value="user.realname" :required="true"/>
-        <Input v-if="!user.id" name="password" label="密码" type="password" :value="user.password" :required="true"/>
-        <Select2 name="roleCodes" label="角色" :value="user.roleCodes" placeholder="请选择角色"
-                 url="dashboard/system/user/roles"
-                 code="code" disp="name"/>
+      <Form id="userForm" method="post" :action="'dashboard/system/user/' + (user.id ? 'update' : 'save')" slot="body">
+        <input v-if="!!user.id" type="hidden" name="id" :value="user.id"/>
+        <Input name="username" label="用户名" v-model="user.username" :required="true"/>
+        <Input name="realname" label="真实姓名" v-model="user.realname" :required="true"/>
+        <Input v-if="!user.id" name="password" label="密码" type="password" v-model="user.password" :required="true"/>
       </Form>
 
       <template slot="actions">
@@ -71,13 +69,11 @@
       }
     },
     methods: {
+      create: function (e) {
+        this.user = {};
+      },
       edit: function (e) {
-        let user = this.$refs.table.getItem($(e.target).data("index"));
-        let that = this;
-        this.get("dashboard/system/user/" + user.username, function (data) {
-          that.user = data.user;
-          that.roles = data.roles;
-        });
+        this.user = this.$refs.table.getItem($(e.target).data("index"));
       }
     }
   }

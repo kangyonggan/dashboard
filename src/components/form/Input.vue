@@ -5,7 +5,8 @@
     </div>
     <div class="col-md-7 controls">
       <input :type="type != 'date' ? type : 'text'" :id="uuid" :name="name" :readonly="readonly || type==='date'"
-             :value="value"
+             v-bind:value="value"
+             v-on:input="$emit('input', $event.target.value)"
              :class="{'form-control': true, 'readonly': readonly || type==='date', 'date-picker': type==='date'}"
              :placeholder="placeholder?placeholder:'请输入' + label"/>
     </div>
@@ -15,6 +16,10 @@
 <script>
   export default {
     name: 'Input',
+    model: {
+      prop: 'value',
+      event: 'input'
+    },
     props: {
       name: {
         required: true,
