@@ -8,8 +8,8 @@
 
       <Actions>
         <Button name="查询" icon="fa-search" clazz="btn-sm btn-purple" table="table"/>
-        <Button name="清除" icon="fa-undo" clazz="btn-sm btn-default" type="reset"/>
-        <Button name="新增用户" icon="fa-plus" clazz="btn-sm btn-skin" modal="formModal" :click="create"/>
+        <Button name="重置" icon="fa-undo" clazz="btn-sm btn-default" type="reset"/>
+        <Button name="新增用户" icon="fa-plus" clazz="btn-sm btn-skin" :click="create"/>
       </Actions>
     </Form>
 
@@ -30,23 +30,10 @@
         <td>{{app.item.isDeleted | YesNo}}</td>
         <td>{{app.item.createdTime | DateTime}}</td>
         <td>
-          <Button name="编辑" :data-index="app.index" modal="formModal" clazz="btn-xs btn-inverse" :click="edit"/>
+          <Button name="编辑" :data-index="app.index" clazz="btn-xs btn-inverse" :click="edit"/>
         </td>
       </template>
     </Table>
-
-    <Modal id="formModal" :title="user.id ? '编辑用户' : '新增用户'" :static="true">
-      <Form id="userForm" method="post" :action="'dashboard/system/user/' + (user.id ? 'update' : 'save')" slot="body">
-        <input v-if="!!user.id" type="hidden" name="id" :value="user.id"/>
-        <Input name="username" label="用户名" v-model="user.username" :required="true"/>
-        <Input name="realname" label="真实姓名" v-model="user.realname" :required="true"/>
-        <Input v-if="!user.id" name="password" label="密码" type="password" v-model="user.password" :required="true"/>
-      </Form>
-
-      <template slot="actions">
-        <Button name="提交" icon="fa-check" clazz="btn-skin" form="userForm"/>
-      </template>
-    </Modal>
   </div>
 </template>
 
@@ -56,11 +43,11 @@
   import Actions from "../../components/form/Actions.vue";
   import Button from "../../components/form/Button.vue";
   import Table from "../../components/table/Table.vue";
-  import Modal from "../../components/Modal.vue";
   import Select2 from "../../components/form/Select2.vue";
+  import Model from "./Model.vue";
 
   export default {
-    components: {Form, Input, Actions, Button, Table, Modal, Select2},
+    components: {Form, Input, Actions, Button, Table, Select2},
     name: 'SystemUser',
     data() {
       return {
@@ -69,7 +56,16 @@
       }
     },
     methods: {
-      create: function (e) {
+      create: function () {
+        this.$layer.iframe({
+          title: '新增用户',
+          area: ['800px', '600px'],
+          content: {
+            content: Model,
+            parent: this,
+            data: []
+          }
+        });
         this.user = {};
       },
       edit: function (e) {

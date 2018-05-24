@@ -1,6 +1,5 @@
 <template>
   <button :id="id" :class="'btn ' + clazz" :type="type" @click="func($event)"
-          :data-toggle="modal ? 'modal' : ''" :data-target="modal ? '#' + modal : ''"
           :data-loading-text="'正在' + name + '...'">
     <i :class="'ace-icon fa ' + icon" v-if="icon"></i>
     {{name}}
@@ -38,10 +37,6 @@
         type: Function
       },
       table: {
-        required: false,
-        type: String
-      },
-      modal: {
         required: false,
         type: String
       },

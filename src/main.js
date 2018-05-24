@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import layer from 'vue-layer'
 
 Vue.config.productionTip = false;
 
@@ -39,3 +40,5 @@ Vue.filter('Time', function (value) {
   date.setTime(value);
   return date.format('HH:mm:ss');
 });
+
+Vue.prototype.$layer = layer(Vue);
