@@ -39,10 +39,6 @@
       table: {
         required: false,
         type: String
-      },
-      form: {
-        required: false,
-        type: String
       }
     },
     methods: {
@@ -53,33 +49,16 @@
           e.preventDefault();
           this.click(e);
         } else if (this.table) {
+          // 表单
           e.preventDefault();
-
           let ref = this.getTableRef(this.$parent);
-          let $form = this.getForm($btn);
-
           if (ref) {
-            // 如果绑定了table， 则提交查询后渲染table
             $btn.button('loading');
-            ref.query($btn, $form);
+            ref.query($btn, $btn.parents("form"));
           }
-        } else if (this.form) {
-          e.preventDefault();
-          let $form = this.getForm($btn);
-          // 如果绑定form，则提交form
-          $btn.button('loading');
-          // TODO form参数
-          this.post($form.attr("action"), {"username": "admin"}, function () {
-            $btn.button('reset');
-            if ($btn.parents(".modal")) {
-              $btn.parents(".modal").modal('hide');
-            }
-          }, function () {
-            $btn.button('reset');
-          });
         } else if (this.type === 'reset') {
           // 重置
-          let $form = this.getForm($btn);
+          let $form = $btn.parents("form");
           if ($form) {
             $form.find(".chosen-select").val('').trigger("chosen:updated");
           }
@@ -94,14 +73,6 @@
         } else {
           return this.getTableRef($parent.$parent);
         }
-      },
-      getForm: function ($btn) {
-        let $form = $btn.parents("form");
-        if (this.form) {
-          $form = $("#" + this.form);
-        }
-
-        return $form;
       }
     }
   }

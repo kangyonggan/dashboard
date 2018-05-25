@@ -43,33 +43,41 @@
   import Actions from "../../components/form/Actions.vue";
   import Button from "../../components/form/Button.vue";
   import Table from "../../components/table/Table.vue";
-  import Select2 from "../../components/form/Select2.vue";
-  import Model from "./Model.vue";
+  import Modal from "./Modal.vue";
 
   export default {
-    components: {Form, Input, Actions, Button, Table, Select2},
+    components: {Form, Input, Actions, Button, Table},
     name: 'SystemUser',
     data() {
       return {
-        user: {},
-        roles: []
+        user: {}
       }
     },
     methods: {
       create: function () {
-        this.$layer.iframe({
-          title: '新增用户',
-          area: ['800px', '600px'],
-          content: {
-            content: Model,
-            parent: this,
-            data: []
-          }
-        });
         this.user = {};
+        this.modal('新增用户');
       },
       edit: function (e) {
         this.user = this.$refs.table.getItem($(e.target).data("index"));
+        this.modal('编辑用户');
+      },
+      modal: function (title) {
+        this.$layer.iframe({
+          title: title,
+          area: ['600px', '400px'],
+          shadeClose: false,
+          content: {
+            content: Modal,
+            parent: this,
+            data: {
+              'user': this.user
+            }
+          },
+          end: function () {
+            console.log("关闭后回调");
+          }
+        });
       }
     }
   }

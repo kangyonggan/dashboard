@@ -14,18 +14,18 @@
         "id": 1,
         "ip": "0:0:0:0:0:0:0:1",
         "isDeleted": 0,
-        "realname": "管理员",
+        "realname": "管理员1",
         "updatedTime": 1525566928000,
-        "username": "admin"
+        "username": "admin1"
       },
       {
         "createdTime": 1525567192000,
         "id": 2,
         "ip": "0:0:0:0:0:0:0:1",
         "isDeleted": 0,
-        "realname": "管理员",
+        "realname": "管理员2",
         "updatedTime": 1525567192000,
-        "username": "admin"
+        "username": "admin2"
       },
       {
         "createdTime": 1525567798000,
