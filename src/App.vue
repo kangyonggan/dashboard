@@ -1,9 +1,9 @@
 <template>
   <div id="app" class="layout">
     <Layout :style="{minHeight: '100vh'}">
-      <Header :style="{position: 'fixed', width: '100%'}">
-        <Menu mode="horizontal" theme="dark">
-          <div class="layout-logo">工作台</div>
+      <Header :style="{position: 'fixed', width: '100%', background: '#2d8cf0'}">
+        <Menu mode="horizontal" theme="primary">
+          <div class="layout-logo">后台管理系统</div>
           <div class="layout-nav">
             <MenuItem name="welcome">
               欢迎，康永敢
@@ -19,27 +19,26 @@
       <Layout :style="{marginTop: '64px'}">
         <Sider collapsible :collapsed-width="78" v-model="isCollapsed"
                :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-          <Menu active-name="SYSTEM_USER" theme="dark" width="auto" :open-names="['SYSTEM']" :class="menuitemClasses"
-                :style="{'border-top': '1px solid #999'}">
-            <MenuItem name="DASHBOARD">
-              <Icon type="laptop"></Icon>
+          <Menu :active-name="activeName" theme="dark" width="auto" :open-names="openNames" :class="menuitemClasses" @on-select="menuSelect">
+            <MenuItem name="/">
+              <Icon type="monitor"></Icon>
                 工作台
             </MenuItem>
-            <Submenu name="SYSTEM">
+            <Submenu name="system">
               <template slot="title">
                 <Icon type="ios-gear"></Icon>
                 系统
               </template>
-              <MenuItem name="SYSTEM_USER">用户管理</MenuItem>
-              <MenuItem name="SYSTEM_ROLE">角色管理</MenuItem>
-              <MenuItem name="SYSTEM_MENU">菜单管理</MenuItem>
+              <MenuItem name="/system/user">用户管理</MenuItem>
+              <MenuItem name="/system/role">角色管理</MenuItem>
+              <MenuItem name="/system/menu">菜单管理</MenuItem>
             </Submenu>
-            <Submenu name="USER">
+            <Submenu name="user">
               <template slot="title">
                 <Icon type="person"></Icon>
                 我的
               </template>
-              <MenuItem name="USER_INFO">个人信息</MenuItem>
+              <MenuItem name="/user/info">个人信息</MenuItem>
             </Submenu>
           </Menu>
         </Sider>
@@ -53,7 +52,7 @@
           <Content :style="{padding: '24px', background: '#fff'}">
             <router-view/>
           </Content>
-          <Footer class="layout-footer-center">2018 &copy; 康永敢</Footer>
+          <Footer class="layout-footer-center">2018 &copy; 后台管理系统 由康永敢个人搭建</Footer>
         </Layout>
       </Layout>
     </Layout>
@@ -79,6 +78,26 @@
           'padding': '0 24px 24px',
           'marginLeft': this.isCollapsed ? '78px' : '200px'
         }
+      },
+      activeName: function () {
+        return window.location.hash.substring(1);
+      },
+      openNames: function () {
+        let hash = window.location.hash.substring(1);
+        let arr = hash.split('/');
+        let openNames = [];
+        if (arr.length > 2) {
+            for (let i = 1; i < arr.length - 1; i++) {
+              openNames[i - 1] = arr[i];
+            }
+        }
+
+        return openNames;
+      }
+    },
+    methods: {
+      menuSelect: function (menuCode) {
+        this.$router.push(menuCode)
       }
     }
   }
