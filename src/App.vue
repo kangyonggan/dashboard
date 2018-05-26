@@ -52,7 +52,7 @@
           <Content :style="{padding: '24px', background: '#fff'}">
             <router-view/>
           </Content>
-          <Footer class="layout-footer-center">2018 &copy; 后台管理系统 由康永敢个人搭建</Footer>
+          <Footer class="layout-footer-center">2018 &copy; 后台管理系统 由康永敢搭建</Footer>
         </Layout>
       </Layout>
     </Layout>
@@ -107,7 +107,7 @@
   .layout-logo {
     position: relative;
     top: 2px;
-    width: 100px;
+    width: 120px;
     font-size: 20px;
     color: #fff;
     float: left;
