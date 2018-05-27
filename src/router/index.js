@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import axios from 'axios'
 import Router from 'vue-router'
 import Index from '@/views/Index'
 import User from '@/views/system/User'
@@ -63,4 +64,39 @@ router.beforeEach((to, from, next) => {
 
 export default router;
 
+// 定义全局方法
+Vue.prototype.get = get;
+
+/**
+ * get请求
+ *
+ * @param url
+ * @param success
+ * @param failure
+ */
+function get(url, success, failure) {
+  url = process.env.API_ROOT + url;
+
+  axios.get(url).then(res => {
+    if (res.status === 200) {
+      if (res.data.respCo === '0000') {
+        if (success) {
+          success(res.data);
+        }
+      } else {
+        if (failure) {
+          failure();
+        }
+      }
+    } else {
+      if (failure) {
+        failure();
+      }
+    }
+  }).catch(error => {
+    if (failure) {
+      failure();
+    }
+  });
+}
 

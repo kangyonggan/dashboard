@@ -1,6 +1,29 @@
 <template>
   <div>
-    <Table border :columns="columns" :data="data"></Table>
+    <Form :model="params" inline>
+      <FormItem>
+        <Input v-model="params.username" placeholder="请输入用户名"/>
+      </FormItem>
+      <FormItem>
+        <Input v-model="params.realname" placeholder="请输入真实姓名"/>
+      </FormItem>
+      <FormItem>
+        <DatePicker v-model="params.startCreatedTime" placeholder="请选择创建开始日期" @on-change="params.startCreatedTime=$event"/>
+      </FormItem>
+      <FormItem>
+        <DatePicker v-model="params.endCreatedTime" placeholder="请选择创建结束日期" @on-change="params.endCreatedTime=$event"/>
+      </FormItem>
+      <Row>
+        <FormItem>
+          <Button type="info" icon="ios-search" @click="query">查询</Button>
+          <Button type="warning" icon="ios-refresh-empty" @click="reset">清除</Button>
+          <Button type="primary" icon="plus">新增</Button>
+          <Button type="error" icon="minus">删除</Button>
+        </FormItem>
+      </Row>
+    </Form>
+
+    <Table border :columns="columns" :data="pageInfo.list"/>
   </div>
 </template>
 
@@ -9,6 +32,8 @@
     name: 'User',
     data() {
       return {
+        params: {},
+        pageInfo: {},
         columns: [
           {
             title: 'ID',
@@ -24,43 +49,15 @@
           },
           {
             title: '逻辑删除',
-            key: 'isDeleted',
-            render: (h, params) => {
-              return h('div', [
-                h('span', this.yesNo(params.row.isDeleted))
-              ]);
-            },
-            filters: [
-              {
-                label: '未删除',
-                value: '0'
-              },
-              {
-                label: '已删除',
-                value: '1'
-              }
-            ],
-            filterMethod (value, row) {
-              return row.isDeleted.indexOf(value) > -1;
-            }
+            key: 'isDeleted'
           },
           {
             title: '创建时间',
-            key: 'createdTime',
-            render: (h, params) => {
-              return h('div', [
-                h('span', this.dateTime(params.row.createdTime))
-              ]);
-            }
+            key: 'createdTime'
           },
           {
             title: '更新时间',
-            key: 'updatedTime',
-            render: (h, params) => {
-              return h('div', [
-                h('span', this.dateTime(params.row.updatedTime))
-              ]);
-            }
+            key: 'updatedTime'
           },
           {
             title: '操作',
@@ -79,7 +76,7 @@
                       this.show(params.index)
                     }
                   }
-                }, '详情'),
+                }, '编辑'),
                 h('Button', {
                   props: {
                     type: 'error',
@@ -93,48 +90,31 @@
                 }, '删除')
               ]);
             }
-          }],
-        data: [{
-          id: '1',
-          username: 'admin',
-          realname: '管理员',
-          isDeleted: '0',
-          createdTime: '1527330702000',
-          updatedTime: '1527333702000'
-        }, {
-          id: '2',
-          username: 'xiaotiao',
-          realname: '小跳',
-          isDeleted: '1',
-          createdTime: '1527330502000',
-          updatedTime: '1527333502000'
-        }, {
-          id: '3',
-          username: 'xiaoxin',
-          realname: '小新',
-          isDeleted: '0',
-          createdTime: '1527330602000',
-          updatedTime: '1527330902000'
-        }]
+          }]
       }
     },
+    mounted: function () {
+      this.query();
+    },
     methods: {
-      show (index) {
-        this.$Modal.info({
-          title: '用户详情',
-          content: `ID：${this.data[index].id}<br>用户名：${this.data[index].username}<br>真实姓名：${this.data[index].realname}`
-        })
+      reset () {
+        this.params = {};
       },
-      remove (index) {
-        this.data.splice(index, 1);
-      },
-      dateTime (time) {
-        let date = new Date();
-        date.setTime(time);
-        return date.format('yyyy-MM-dd HH:mm:ss');
-      },
-      yesNo (value) {
-        return value === '1' ? "是" : "否";
+      query: function () {
+        let that = this;
+        let ps = '?';
+        for (let key in this.params) {
+          if (this.params[key]) {
+            ps += key + "=";
+            ps += this.params[key] + "&";
+          }
+        }
+        console.log(ps);
+        this.get("system/user" + ps, function (data) {
+          that.pageInfo = data.pageInfo;
+        }, function () {
+          that.$Message.error('网络错误，请稍后再试!');
+        });
       }
     }
   }
