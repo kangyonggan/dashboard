@@ -7,13 +7,18 @@ import './common'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 
-Vue.use(iView)
+Vue.use(iView);
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
-new Vue({
+let app = new Vue({
   el: '#app',
   router,
   components: {App},
   template: '<App/>'
 });
+
+/**
+ * 全局配置消息体距离顶部的距离，默认为24像素，会被固定的导航条遮挡
+ */
+app.$Message.config({top: 88});

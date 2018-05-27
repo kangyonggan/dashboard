@@ -2,8 +2,8 @@ import Vue from 'vue'
 import axios from 'axios'
 
 // 定义全局方法
-
 Vue.prototype.get = get;
+Vue.prototype.post = post;
 Vue.prototype.yesNo = yesNo;
 Vue.prototype.reset = reset;
 Vue.prototype.query = query;
@@ -21,26 +21,67 @@ function get(url, success, failure) {
   url = process.env.API_ROOT + url;
 
   axios.get(url).then(res => {
-    if (res.status === 200) {
-      if (res.data.respCo === '0000') {
-        if (success) {
-          success(res.data);
-        }
-      } else {
-        if (failure) {
-          failure();
-        }
+    dealResponse(res, success, failure);
+  }).catch(error => {
+    if (failure) {
+      failure();
+      this.$Message.error("服务器内部错误，请稍后再试!");
+    }
+  });
+}
+
+/**
+ * post请求
+ *
+ * @param url
+ * @param data
+ * @param success
+ * @param failure
+ */
+function post(url, data, success, failure) {
+  url = process.env.API_ROOT + url;
+  let params = new FormData();
+  for (let key in data) {
+    if (key) {
+      params.append(key, data[key]);
+    }
+  }
+
+  axios.post(url, params).then(res => {
+    dealResponse(res, success, failure);
+  }).catch(error => {
+    if (failure) {
+      failure();
+      this.$Message.error("服务器内部错误，请稍后再试!");
+    }
+  });
+}
+
+/**
+ * 处理响应
+ *
+ * @param res
+ * @param success
+ * @param failure
+ */
+function dealResponse(res, success, failure) {
+  if (res.status === 200) {
+    if (res.data.respCo === '0000') {
+      if (success) {
+        success(res.data);
       }
     } else {
       if (failure) {
         failure();
+        this.$Message.error(res.data.respMsg);
       }
     }
-  }).catch(error => {
+  } else {
     if (failure) {
       failure();
+      this.$Message.error("服务器内部错误，请稍后再试!");
     }
-  });
+  }
 }
 
 /**
@@ -51,7 +92,7 @@ function get(url, success, failure) {
  */
 function yesNo(h, params) {
   return h('div', [
-    h('span', '1' === params.row.isDeleted ? "是" : "否")
+    h('span', 1 === params.row.isDeleted * 1 ? "是" : "否")
   ])
 }
 
