@@ -15,7 +15,7 @@
       </FormItem>
       <Row>
         <FormItem>
-          <Button type="info" icon="ios-search" @click="query">查询</Button>
+          <Button type="info" icon="ios-search" @click="query($refs.form)">查询</Button>
           <Button type="warning" icon="ios-refresh-empty" @click="reset($refs.form)">清除</Button>
           <Button type="primary" icon="plus">新增</Button>
           <Button type="error" icon="minus">删除</Button>
@@ -24,6 +24,8 @@
     </Form>
 
     <Table border :columns="columns" :data="pageInfo.list"/>
+
+    <Page :total="pageInfo.total" show-total show-sizer show-elevator :style="{marginTop: '20px'}" @on-change="jump($event, $refs.form)" @on-page-size-change="changePageSize($event, $refs.form)"></Page>
   </div>
 </template>
 
@@ -109,20 +111,9 @@
       /**
        * 初始化完成后发起查询
        */
-      this.query();
+      this.query(this.$refs.form);
     },
     methods: {
-      /**
-       * 查询
-       */
-      query: function () {
-        let that = this;
-        this.get("system/user" + that.getQueryParams(this.params), function (data) {
-          that.pageInfo = data.pageInfo;
-        }, function () {
-          that.$Message.error('网络错误，请稍后再试!');
-        });
-      }
     }
   }
 </script>

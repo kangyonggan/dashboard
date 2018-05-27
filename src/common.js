@@ -6,7 +6,9 @@ import axios from 'axios'
 Vue.prototype.get = get;
 Vue.prototype.yesNo = yesNo;
 Vue.prototype.reset = reset;
-Vue.prototype.getQueryParams = getQueryParams;
+Vue.prototype.query = query;
+Vue.prototype.jump = jump;
+Vue.prototype.changePageSize = changePageSize;
 
 /**
  * get请求
@@ -69,17 +71,60 @@ function reset(form) {
  */
 function getQueryParams(params) {
   let ps = '';
-  for (let key in this.params) {
-    if (this.params[key]) {
+  for (let key in params) {
+    if (params[key]) {
       if (ps === '') {
         ps += '?';
       } else {
         ps += '&';
       }
       ps += key + "=";
-      ps += this.params[key];
+      ps += params[key];
     }
   }
 
   return ps;
+}
+
+/**
+ * 查询
+ *
+ * @param form
+ */
+function query(form) {
+  let url = window.location.hash.substring(2) + getQueryParams(form.model);
+  get(url, function (data) {
+    form.$parent.pageInfo = data.pageInfo;
+  }, function () {
+    form.$Message.error('网络错误，请稍后再试!');
+  });
+}
+
+/**
+ * 分页跳转
+ *
+ * @param pageNum
+ * @param form
+ */
+function jump(pageNum, form) {
+  if (form && form.model) {
+    form.model.pageNum = pageNum;
+  }
+
+  query(form);
+}
+
+/**
+ * 修改分页大小
+ *
+ * @param pageSize
+ * @param form
+ */
+function changePageSize(pageSize, form) {
+  if (form && form.model) {
+    form.model.pageSize = pageSize;
+    form.model.pageNum = 1;
+  }
+
+  query(form);
 }
