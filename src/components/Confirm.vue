@@ -6,10 +6,10 @@
     </p>
     <div style="text-align:center">
       <p>{{content}}</p>
-      <p>{{title}}吗?</p>
+      <p>{{btnText}}吗?</p>
     </div>
     <div slot="footer">
-      <Button :type="type" size="large" long :loading="isLoading" @click="click">{{title}}</Button>
+      <Button :type="type" size="large" long :loading="isLoading" @click="click">{{btnText}}</Button>
     </div>
   </Modal>
 </template>
@@ -19,6 +19,10 @@
     name: 'Confirm',
     props: {
       title: {
+        required: true,
+        type: String
+      },
+      btnText: {
         required: true,
         type: String
       },

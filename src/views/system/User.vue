@@ -29,8 +29,8 @@
     <Page :total="pageInfo.total" show-total show-sizer show-elevator :style="{marginTop: '20px'}"
           @on-change="jump($event, $refs.form)" @on-page-size-change="changePageSize($event, $refs.form)"></Page>
 
-    <Confirm ref="deleteConfirm" title="删除确认" content="此次删除为逻辑删除，可以对已删除的数据进行恢复！" type="error" :ok="deleteBatch"/>
-    <Confirm ref="recoveryConfirm" title="删除恢复" content="此次恢复为逻辑恢复，可以对已恢复的数据进行删除！" :ok="recoveryBatch"/>
+    <Confirm ref="deleteConfirm" title="删除确认" content="此次删除为逻辑删除，可以对已删除的数据进行恢复！" btnText="确认删除" type="error" :ok="deleteBatch"/>
+    <Confirm ref="recoveryConfirm" title="恢复确认" content="此次恢复为逻辑恢复，可以对已恢复的数据进行删除！" btnText="确认恢复" :ok="recoveryBatch"/>
   </div>
 </template>
 
@@ -107,7 +107,21 @@
                       this.show(params.index)
                     }
                   }
-                }, '编辑')
+                }, '编辑'),
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.show(params.index)
+                    }
+                  }
+                }, '设置密码')
               ]);
             }
           }]
