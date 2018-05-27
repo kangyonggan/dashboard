@@ -19,26 +19,27 @@
       <Layout :style="{marginTop: '64px'}">
         <Sider collapsible :collapsed-width="78" v-model="isCollapsed"
                :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-          <Menu :active-name="activeName" theme="dark" width="auto" :open-names="openNames" :class="menuitemClasses" @on-select="menuSelect">
-            <MenuItem name="/">
-              <Icon type="monitor"></Icon>
-                工作台
+          <Menu ref="menus" :active-name="activeName" :accordion="true" theme="dark" width="auto"
+                :open-names="openNames" :class="menuitemClasses" @on-select="menuSelect">
+            <MenuItem name="" title="首页">
+              <Icon type="home"></Icon>
+              首页
             </MenuItem>
-            <Submenu name="system">
+            <Submenu name="system" title="系统">
               <template slot="title">
                 <Icon type="ios-gear"></Icon>
                 系统
               </template>
-              <MenuItem name="/system/user">用户管理</MenuItem>
-              <MenuItem name="/system/role">角色管理</MenuItem>
-              <MenuItem name="/system/menu">菜单管理</MenuItem>
+              <MenuItem name="system/user" title="用户管理">用户管理</MenuItem>
+              <MenuItem name="system/role" title="角色管理">角色管理</MenuItem>
+              <MenuItem name="system/menu" title="菜单管理">菜单管理</MenuItem>
             </Submenu>
-            <Submenu name="user">
+            <Submenu name="user" title="我的">
               <template slot="title">
                 <Icon type="person"></Icon>
                 我的
               </template>
-              <MenuItem name="/user/info">个人信息</MenuItem>
+              <MenuItem name="user/info" title="个人信息">个人信息</MenuItem>
             </Submenu>
           </Menu>
         </Sider>
@@ -46,8 +47,7 @@
         <Layout :style="contentMarginLeft">
           <Breadcrumb :style="{margin: '24px 0'}">
             <BreadcrumbItem>工作台</BreadcrumbItem>
-            <BreadcrumbItem>系统</BreadcrumbItem>
-            <BreadcrumbItem>用户管理</BreadcrumbItem>
+            <BreadcrumbItem v-for="(breadcrumb, index) in breadcrumbs" :key="index">{{breadcrumb}}</BreadcrumbItem>
           </Breadcrumb>
           <Content :style="{padding: '24px', background: '#fff'}">
             <router-view/>
@@ -64,8 +64,12 @@
     name: 'App',
     data() {
       return {
-        isCollapsed: false
+        isCollapsed: false,
+        breadcrumbs: []
       }
+    },
+    mounted: function () {
+      this.updateBreadcrumbs();
     },
     computed: {
       menuitemClasses: function () {
@@ -80,16 +84,16 @@
         }
       },
       activeName: function () {
-        return window.location.hash.substring(1);
+        return window.location.hash.substring(2);
       },
       openNames: function () {
         let hash = window.location.hash.substring(1);
         let arr = hash.split('/');
         let openNames = [];
         if (arr.length > 2) {
-            for (let i = 1; i < arr.length - 1; i++) {
-              openNames[i - 1] = arr[i];
-            }
+          for (let i = 1; i < arr.length - 1; i++) {
+            openNames[i - 1] = arr[i];
+          }
         }
 
         return openNames;
@@ -97,7 +101,30 @@
     },
     methods: {
       menuSelect: function (menuCode) {
-        this.$router.push(menuCode)
+        this.$router.push('/' + menuCode);
+        this.updateBreadcrumbs();
+      },
+      updateBreadcrumbs: function() {
+        let hash = window.location.hash.substring(2);
+        let arr = hash.split('/');
+        this.breadcrumbs = [];
+        this.calcBreadcrumbs(this.$refs.menus.$children, arr, 0);
+      },
+      calcBreadcrumbs: function (children, arr, index) {
+        if (!children || children.length === 0) {
+          return;
+        }
+        let name = arr[0];
+        for (let i = 0; i < index; i++) {
+          name += "/";
+          name += arr[i + 1];
+        }
+        for (let i = 0; i < children.length; i++) {
+          if (children[i].name === name) {
+            this.breadcrumbs.push(children[i].$el.title);
+            this.calcBreadcrumbs(children[i].$children, arr, index + 1);
+          }
+        }
       }
     }
   }
