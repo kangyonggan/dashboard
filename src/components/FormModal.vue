@@ -1,5 +1,5 @@
 <template>
-  <Modal :title="title" v-model="showModel" :mask-closable="false" :closable="false">
+  <Modal :title="title" v-model="showModel" :mask-closable="false" :closable="false" @on-ok="ok">
     <slot></slot>
   </Modal>
 </template>
@@ -11,32 +11,23 @@
       title: {
         required: true,
         type: String
+      },
+      ok: {
+        required: true,
+        type: Function
       }
     },
     data() {
       return {
-        isLoading: false,
         showModel: false
       }
     },
     methods: {
       show: function () {
-        this.stop();
         this.showModel = true;
       },
       hide: function () {
-        this.stop();
         this.showModel = false;
-      },
-      loading: function () {
-        this.isLoading = true;
-      },
-      stop: function () {
-        this.isLoading = false;
-      },
-      click: function () {
-        this.loading();
-        this.ok();
       }
     }
   }

@@ -18,9 +18,9 @@
         <FormItem>
           <Button type="info" icon="ios-search" @click="query($refs.queryForm)">查询</Button>
           <Button type="warning" icon="ios-refresh-empty" @click="reset($refs.queryForm)">清除</Button>
-          <Button type="primary" icon="plus" @click="$refs.userModal.show()">新增</Button>
-          <Button type="error" icon="trash-a" @click="$refs.deleteConfirm.show()">删除</Button>
-          <Button type="warning" icon="ios-undo" @click="$refs.recoveryConfirm.show()">恢复</Button>
+          <Button type="primary" icon="plus" @click="onCreate">新增</Button>
+          <Button type="error" icon="trash-a" @click="onDelete">删除</Button>
+          <Button type="warning" icon="ios-undo" @click="onRecovery">恢复</Button>
         </FormItem>
       </Row>
     </Form>
@@ -31,12 +31,7 @@
           @on-change="jump($event, $refs.queryForm)"
           @on-page-size-change="changePageSize($event, $refs.queryForm)"></Page>
 
-    <Confirm ref="deleteConfirm" title="删除确认" content="此次删除为逻辑删除，可以对已删除的数据进行恢复！" btnText="确认删除" type="error"
-             :ok="deleteBatch"/>
-    <Confirm ref="recoveryConfirm" title="恢复确认" content="此次恢复为逻辑恢复，可以对已恢复的数据进行删除！" btnText="确认恢复" :ok="recoveryBatch"/>
-
-    <FormModal ref="userModal" title="新增用户">
-
+    <FormModal ref="userModal" title="新增用户" :ok="onSubmit">
       <Form ref="form" :model="user" :rules="userValidate">
         <FormItem label="用户名" prop="username">
           <Input v-model="user.username" placeholder="请输入用户名"/>
@@ -53,12 +48,11 @@
 </template>
 
 <script>
-  import Confirm from '@/components/Confirm';
   import FormModal from "../../components/FormModal";
 
   export default {
     name: 'User',
-    components: {FormModal, Confirm},
+    components: {FormModal},
     data() {
       return {
         /**
@@ -176,7 +170,7 @@
 
         if (usernames.length === 0) {
           this.$Message.warning("至少选择一行！");
-          this.$refs.deleteConfirm.hide();
+          this.$Modal.remove();
           return;
         }
 
@@ -189,7 +183,7 @@
         }, function () {
           that.$Message.error("网络错误，请稍后再试！");
         });
-        that.$refs.deleteConfirm.hide();
+        this.$Modal.remove();
       },
       /**
        * 批量恢复
@@ -202,7 +196,7 @@
 
         if (usernames.length === 0) {
           this.$Message.warning("至少选择一行！");
-          this.$refs.recoveryConfirm.hide();
+          this.$Modal.remove();
           return;
         }
 
@@ -215,7 +209,7 @@
         }, function () {
           that.$Message.error("网络错误，请稍后再试！");
         });
-        that.$refs.recoveryConfirm.hide();
+        this.$Modal.remove();
       },
       /**
        * 选中项发生变化
@@ -224,6 +218,53 @@
        */
       selectionChange: function (selection) {
         this.selection = selection;
+      },
+      /**
+       * 删除用户
+       */
+      onDelete: function () {
+        let that = this;
+        this.$Modal.confirm({
+          title: "删除确认",
+          content: "确认删除所选择的用户吗？",
+          loading: true,
+          closable: true,
+          onOk: function () {
+            that.deleteBatch();
+          }
+        });
+      },
+      /**
+       * 恢复用户
+       */
+      onRecovery: function () {
+        let that = this;
+        this.$Modal.confirm({
+          title: "恢复确认",
+          content: "确认恢复所选择的用户吗？",
+          loading: true,
+          closable: true,
+          onOk: function () {
+            that.recoveryBatch();
+          }
+        });
+      },
+      /**
+       * 新增用户
+       */
+      onCreate: function () {
+        this.user = {};
+        this.$refs.form.resetFields();
+        this.$refs.userModal.show();
+      },
+      onSubmit: function () {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.$Message.success('Success!');
+          } else {
+            this.$Message.error('Fail!');
+          }
+        })
       }
     }
   }
