@@ -31,14 +31,14 @@
           @on-change="jump($event, $refs.queryForm)"
           @on-page-size-change="changePageSize($event, $refs.queryForm)"></Page>
 
-    <FormModal ref="userModal" formRef="form" title="新增用户" :model="user" :rules="userValidate" :ok="onSubmit">
+    <FormModal ref="userModal" formRef="form" :action="'system/user/' + (user.id ? 'update' : 'save')" :title="(user.id ? '编辑' : '新增') + '用户'" :model="user" :rules="userValidate" :success="onSuccess">
       <FormItem label="用户名" prop="username">
         <Input v-model="user.username" placeholder="请输入用户名"/>
       </FormItem>
       <FormItem label="真实姓名" prop="realname">
         <Input v-model="user.realname" placeholder="请输入真实姓名"/>
       </FormItem>
-      <FormItem label="密码" prop="password">
+      <FormItem label="密码" prop="password" v-if="!user.id">
         <Input type="password" v-model="user.password" placeholder="请输入密码"/>
       </FormItem>
     </FormModal>
@@ -119,7 +119,7 @@
                   },
                   on: {
                     click: () => {
-                      this.show(params.index)
+                      this.$refs.userModal.show();
                     }
                   }
                 }, '编辑'),
@@ -133,7 +133,7 @@
                   },
                   on: {
                     click: () => {
-                      this.show(params.index)
+
                     }
                   }
                 }, '设置密码')
@@ -254,8 +254,11 @@
         this.user = {};
         this.$refs.userModal.show();
       },
-      onSubmit: function () {
-        this.$refs.userModal.hide();
+      /**
+       * 提交成功
+       */
+      onSuccess: function () {
+        this.query(this.$refs.queryForm);
       }
     }
   }

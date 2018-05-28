@@ -27,8 +27,16 @@
         required: true,
         type: String
       },
-      ok: {
+      action: {
         required: true,
+        type: String
+      },
+      success: {
+        required: false,
+        type: Function
+      },
+      failure: {
+        required: false,
         type: Function
       },
       rules: {
@@ -62,7 +70,20 @@
         this.$refs[this.formRef].validate((valid) => {
           if (valid) {
             this.loading();
-            this.ok();
+            let that = this;
+            this.post(this.action, this.model, function (data) {
+              that.$Message.success(data.respMsg);
+              that.hide();
+              if (that.success) {
+                that.success(data);
+              }
+            }, function () {
+              that.stop();
+              that.$Message.error("网络错误，请稍后再试！");
+              if (that.failure) {
+                that.failure(data);
+              }
+            });
           }
         })
       },
