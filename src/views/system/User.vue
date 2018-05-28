@@ -31,7 +31,7 @@
           @on-change="jump($event, $refs.queryForm)"
           @on-page-size-change="changePageSize($event, $refs.queryForm)"></Page>
 
-    <FormModal ref="userModal" formRef="form" :action="'system/user/' + (user.id ? 'update' : 'save')" :title="(user.id ? '编辑' : '新增') + '用户'" :model="user" :rules="userValidate" :success="onSuccess">
+    <FormModal ref="userModal" :action="'system/user/' + (user.id ? 'update' : 'save')" :title="(user.id ? '编辑' : '新增') + '用户'" :model="user" :rules="userValidate" :success="onSuccess">
       <FormItem label="用户名" prop="username">
         <Input v-model="user.username" placeholder="请输入用户名"/>
       </FormItem>

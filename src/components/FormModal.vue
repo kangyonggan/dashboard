@@ -1,6 +1,6 @@
 <template>
   <Modal :title="title" v-model="showModel" :mask-closable="false" :closable="false">
-    <Form :ref="formRef" :model="model" :rules="rules">
+    <Form :model="model" :rules="rules">
       <slot></slot>
     </Form>
 
@@ -22,10 +22,6 @@
       model: {
         required: true,
         type: Object
-      },
-      formRef: {
-        required: true,
-        type: String
       },
       action: {
         required: true,
@@ -53,7 +49,7 @@
     methods: {
       show: function () {
         this.stop();
-        this.$refs[this.formRef].resetFields();
+        this.$children[0].$children[0].resetFields();
         this.showModel = true;
       },
       hide: function () {
@@ -67,7 +63,7 @@
         this.isLoading = false;
       },
       submit: function () {
-        this.$refs[this.formRef].validate((valid) => {
+        this.$children[0].$children[0].validate((valid) => {
           if (valid) {
             this.loading();
             let that = this;
