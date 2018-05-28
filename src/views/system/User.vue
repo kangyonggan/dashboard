@@ -31,18 +31,16 @@
           @on-change="jump($event, $refs.queryForm)"
           @on-page-size-change="changePageSize($event, $refs.queryForm)"></Page>
 
-    <FormModal ref="userModal" title="新增用户" :ok="onSubmit">
-      <Form ref="form" :model="user" :rules="userValidate">
-        <FormItem label="用户名" prop="username">
-          <Input v-model="user.username" placeholder="请输入用户名"/>
-        </FormItem>
-        <FormItem label="真实姓名" prop="realname">
-          <Input v-model="user.realname" placeholder="请输入真实姓名"/>
-        </FormItem>
-        <FormItem label="密码" prop="password">
-          <Input type="password" v-model="user.password" placeholder="请输入密码"/>
-        </FormItem>
-      </Form>
+    <FormModal ref="userModal" formRef="form" title="新增用户" :model="user" :rules="userValidate" :ok="onSubmit">
+      <FormItem label="用户名" prop="username">
+        <Input v-model="user.username" placeholder="请输入用户名"/>
+      </FormItem>
+      <FormItem label="真实姓名" prop="realname">
+        <Input v-model="user.realname" placeholder="请输入真实姓名"/>
+      </FormItem>
+      <FormItem label="密码" prop="password">
+        <Input type="password" v-model="user.password" placeholder="请输入密码"/>
+      </FormItem>
     </FormModal>
   </div>
 </template>
@@ -254,17 +252,10 @@
        */
       onCreate: function () {
         this.user = {};
-        this.$refs.form.resetFields();
         this.$refs.userModal.show();
       },
       onSubmit: function () {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            this.$Message.success('Success!');
-          } else {
-            this.$Message.error('Fail!');
-          }
-        })
+        this.$refs.userModal.hide();
       }
     }
   }
