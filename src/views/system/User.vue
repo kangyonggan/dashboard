@@ -46,7 +46,7 @@
 </template>
 
 <script>
-  import FormModal from "../../components/FormModal";
+  import FormModal from "@/components/FormModal";
 
   export default {
     name: 'User',
@@ -112,13 +112,19 @@
                 h('Button', {
                   props: {
                     type: 'primary',
-                    size: 'small'
+                    size: 'small',
+                    icon: 'edit'
                   },
                   style: {
                     marginRight: '5px'
                   },
                   on: {
                     click: () => {
+                      this.user = {
+                        id: params.row.id,
+                        username: params.row.username,
+                        realname: params.row.realname
+                      };
                       this.$refs.userModal.show();
                     }
                   }
@@ -126,17 +132,17 @@
                 h('Button', {
                   props: {
                     type: 'primary',
-                    size: 'small'
+                    size: 'small',
+                    icon: 'locked'
                   },
                   style: {
                     marginRight: '5px'
                   },
                   on: {
                     click: () => {
-
                     }
                   }
-                }, '设置密码')
+                }, '修改密码')
               ]);
             }
           }],
