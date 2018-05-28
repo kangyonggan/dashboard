@@ -25,7 +25,6 @@ function get(url, success, failure) {
   }).catch(error => {
     if (failure) {
       failure();
-      this.$Message.error("服务器内部错误，请稍后再试!");
     }
   });
 }
@@ -52,7 +51,6 @@ function post(url, data, success, failure) {
   }).catch(error => {
     if (failure) {
       failure();
-      this.$Message.error("服务器内部错误，请稍后再试!");
     }
   });
 }
@@ -73,13 +71,11 @@ function dealResponse(res, success, failure) {
     } else {
       if (failure) {
         failure();
-        this.$Message.error(res.data.respMsg);
       }
     }
   } else {
     if (failure) {
       failure();
-      this.$Message.error("服务器内部错误，请稍后再试!");
     }
   }
 }

@@ -164,12 +164,6 @@
         }
       }
     },
-    mounted: function () {
-      /**
-       * 初始化完成后发起查询
-       */
-      this.query(this.$refs.queryForm);
-    },
     methods: {
       /**
        * 批量删除
@@ -192,6 +186,8 @@
         }, function (data) {
           that.$Message.success(data.respMsg);
           that.query(that.$refs.queryForm);
+        }, function () {
+          that.$Message.error("网络错误，请稍后再试！");
         });
         that.$refs.deleteConfirm.hide();
       },
@@ -216,6 +212,8 @@
         }, function (data) {
           that.$Message.success(data.respMsg);
           that.query(that.$refs.queryForm);
+        }, function () {
+          that.$Message.error("网络错误，请稍后再试！");
         });
         that.$refs.recoveryConfirm.hide();
       },
