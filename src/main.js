@@ -6,7 +6,10 @@ import router from './router'
 import './common'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
-import FormModal from "@/components/form-modal";
+import AppModal from "@/components/app-modal";
+import AppSelectRemote from "@/components/app-select-remote";
+import AppDatePicker from "@/components/app-date-picker";
+import AppTable from "@/components/app-table";
 
 Vue.use(iView);
 Vue.config.productionTip = true;
@@ -14,7 +17,10 @@ Vue.config.productionTip = true;
 /**
  * 全局组件注册
  */
-Vue.component('FormModal', FormModal);
+Vue.component('AppModal', AppModal);
+Vue.component('AppSelectRemote', AppSelectRemote);
+Vue.component('AppDatePicker', AppDatePicker);
+Vue.component('AppTable', AppTable);
 
 /* eslint-disable no-new */
 let app = new Vue({

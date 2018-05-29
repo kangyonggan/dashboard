@@ -13,7 +13,7 @@
 
 <script>
   export default {
-    name: 'form-modal',
+    name: 'app-modal',
     props: {
       title: {
         required: true,

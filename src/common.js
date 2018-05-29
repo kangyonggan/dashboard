@@ -105,62 +105,65 @@ function reset(form) {
 /**
  * 拼接查询表单的请求参数
  *
- * @param params
+ * @param form
  */
-function getQueryParams(params) {
-  let ps = '';
-  for (let key in params) {
-    if (params[key]) {
-      if (ps === '') {
-        ps += '?';
-      } else {
-        ps += '&';
+function getFormParams(form) {
+  let params = '';
+  if (form) {
+    let model = form.model;
+    for (let key in model) {
+      if (model[key]) {
+        if (params === '') {
+          params += '?';
+        } else {
+          params += '&';
+        }
+        params += key + "=";
+        params += model[key];
       }
-      ps += key + "=";
-      ps += params[key];
     }
   }
 
-  return ps;
+  return params;
 }
 
 /**
  * 排序
  *
  * @param e
- * @param params
- * @param form
+ * @param table
  */
-function sortChange(e, params, form) {
-  if (params) {
-    if (e.order !== 'normal') {
-      params.sort = e.key;
-      params.order = e.order;
-    } else {
-      params.sort = null;
-      params.order = null;
-    }
-  }
-
+function sortChange(e, table) {
+  let form = table.form;
   if (form) {
-    query(form);
+    let model = form.model;
+    if (model) {
+      if (e.order !== 'normal') {
+        model.sort = e.key;
+        model.order = e.order;
+      } else {
+        model.sort = null;
+        model.order = null;
+      }
+    }
+    query(table);
   }
 }
 
 /**
  * 查询
  *
- * @param form
+ * @param table
  */
-function query(form) {
-  let url = window.location.hash.substring(2) + getQueryParams(form.model);
-  form.$parent.loading = true;
+function query(table) {
+  let url = table.url + getFormParams(table.form);
+  table.loading = true;
   get(url, function (data) {
-    form.$parent.pageInfo = data.pageInfo;
-    form.$parent.loading = false;
+    table.pageInfo = data.pageInfo;
+    table.loading = false;
   }, function () {
-    form.$Message.error('网络错误，请稍后再试!');
-    form.$parent.loading = false;
+    table.$Message.error('网络错误，请稍后再试!');
+    table.loading = false;
   });
 }
 
@@ -168,27 +171,29 @@ function query(form) {
  * 分页跳转
  *
  * @param pageNum
- * @param form
+ * @param table
  */
-function jump(pageNum, form) {
+function jump(pageNum, table) {
+  let form = table.form;
   if (form && form.model) {
     form.model.pageNum = pageNum;
   }
 
-  query(form);
+  query(table);
 }
 
 /**
  * 修改分页大小
  *
  * @param pageSize
- * @param form
+ * @param table
  */
-function changePageSize(pageSize, form) {
+function changePageSize(pageSize, table) {
+  let form = table.form;
   if (form && form.model) {
     form.model.pageSize = pageSize;
     form.model.pageNum = 1;
   }
 
-  query(form);
+  query(table);
 }
