@@ -9,7 +9,6 @@
 
 <script>
   export default {
-    name: 'user-form-modal',
     props: {
       success: {
         type: Function
