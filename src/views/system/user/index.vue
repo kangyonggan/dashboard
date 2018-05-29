@@ -29,10 +29,10 @@
     <!--表格-->
     <AppTable ref="table" url="system/user" :columns="columns" :form="$refs.queryForm"/>
 
-    <!--新增/编辑-->
+    <!--新增/编辑用户的界面-->
     <UserFormModal ref="userModal" @success="query($refs.table)"/>
 
-    <!--修改密码-->
+    <!--修改密码的界面-->
     <UserPasswordModal ref="passwordModal"/>
   </div>
 </template>
