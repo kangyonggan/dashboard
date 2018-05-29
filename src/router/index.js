@@ -4,7 +4,7 @@ import Index from '@/views/Index'
 import User from '@/views/system/user/index'
 import Role from '@/views/system/role/index'
 import Menu from '@/views/system/menu/index'
-import Info from '@/views/user/Info'
+import Info from '@/views/user/info'
 import NotFound from '@/views/NotFound'
 
 Vue.use(Router);
