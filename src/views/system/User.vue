@@ -3,10 +3,26 @@
     <!--搜索表单-->
     <Form ref="queryForm" :model="params" inline>
       <FormItem prop="username">
-        <Input v-model="params.username" placeholder="请输入用户名"/>
+        <Select
+          v-model="params.username"
+          filterable
+          clearable
+          remote
+          :remote-method="selectUsername"
+          :loading="searchLoading" placeholder="请输入用户名">
+          <Option v-for="(option, index) in users" :value="option.username" :key="index">{{option.username}}</Option>
+        </Select>
       </FormItem>
       <FormItem prop="realname">
-        <Input v-model="params.realname" placeholder="请输入真实姓名"/>
+        <Select
+          v-model="params.realname"
+          filterable
+          clearable
+          remote
+          :remote-method="selectRealname"
+          :loading="searchLoading" placeholder="请输入真实姓名">
+          <Option v-for="(option, index) in users" :value="option.realname" :key="index">{{option.realname}}</Option>
+        </Select>
       </FormItem>
       <FormItem prop="startCreatedTime">
         <DatePicker v-model="params.startCreatedTime" placeholder="请选择创建开始日期"
@@ -73,6 +89,14 @@
          * 模态框表单的参数
          */
         user: {},
+        /**
+         * 远程搜索的用户
+         */
+        users: [],
+        /**
+         * 远程搜索用户加载中标识
+         */
+        searchLoading: false,
         /**
          * 老的用户名
          */
@@ -316,6 +340,42 @@
         }
 
         return usernames;
+      },
+      /**
+       * 搜索用户
+       *
+       * @param key
+       * @param value
+       */
+      searchUser: function (key, value) {
+        if (value !== '') {
+          this.searchLoading = true;
+          let that = this;
+          this.get("system/user/search?" + key + "=" + value, function (data) {
+            that.users = data.users;
+            that.searchLoading = false;
+          }, function () {
+            that.searchLoading = false;
+          });
+        } else {
+          this.users = [];
+        }
+      },
+      /**
+       * 按用户名搜索
+       *
+       * @param query
+       */
+      selectUsername: function (query) {
+        this.searchUser("username", query);
+      },
+      /**
+       * 按真实姓名搜索
+       *
+       * @param query
+       */
+      selectRealname: function (query) {
+        this.searchUser("realname", query);
       }
     }
   }
