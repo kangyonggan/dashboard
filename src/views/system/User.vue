@@ -36,7 +36,7 @@
           @on-page-size-change="changePageSize($event, $refs.queryForm)"></Page>
 
     <!--新增/编辑-->
-    <FormModal ref="userModal" :action="'system/user/' + (user.id ? 'update' : 'save')" :title="(user.id ? '编辑' : '新增') + '用户'" :model="user" :rules="userValidate" :success="onSuccess">
+    <form-modal ref="userModal" :action="'system/user/' + (user.id ? 'update' : 'save')" :title="(user.id ? '编辑' : '新增') + '用户'" :model="user" :rules="userValidate" :success="onSuccess">
       <FormItem label="用户名" prop="username">
         <Input v-model="user.username" placeholder="请输入用户名"/>
       </FormItem>
@@ -46,23 +46,20 @@
       <FormItem label="密码" prop="password" v-if="!user.id">
         <Input type="password" v-model="user.password" placeholder="请输入密码"/>
       </FormItem>
-    </FormModal>
+    </form-modal>
 
     <!--修改密码-->
-    <FormModal ref="passwordModal" action="system/user/password" title="修改密码" :model="user" :rules="userValidate" :success="onSuccess">
+    <form-modal ref="passwordModal" action="system/user/password" title="修改密码" :model="user" :rules="userValidate" :success="onSuccess">
       <FormItem label="新密码" prop="password">
         <Input type="password" v-model="user.password" placeholder="请输入新密码"/>
       </FormItem>
-    </FormModal>
+    </form-modal>
   </div>
 </template>
 
 <script>
-  import FormModal from "@/components/FormModal";
-
   export default {
     name: 'User',
-    components: {FormModal},
     data() {
       return {
         /**

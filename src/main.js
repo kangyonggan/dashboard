@@ -6,9 +6,15 @@ import router from './router'
 import './common'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
+import formModal from "@/components/form-modal";
 
 Vue.use(iView);
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
+
+/**
+ * 全局组件注册
+ */
+Vue.component('form-modal', formModal);
 
 /* eslint-disable no-new */
 let app = new Vue({
