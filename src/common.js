@@ -133,7 +133,6 @@ function getQueryParams(params) {
  */
 function sortChange(e, params, form) {
   if (params) {
-    console.log(e);
     if (e.order !== 'normal') {
       params.sort = e.key;
       params.order = e.order;
