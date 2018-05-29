@@ -16,7 +16,7 @@
       </FormItem>
       <Row>
         <FormItem>
-          <Button type="info" icon="ios-search" @click="query($refs.table)">查询</Button>
+          <Button type="info" icon="ios-search" @click="refresh($refs.table)">查询</Button>
           <Button type="warning" icon="ios-refresh-empty" @click="reset($refs.queryForm)">清除</Button>
           <Button type="primary" icon="plus" @click="$refs.userModal.show({})">新增</Button>
           <Button type="error" icon="trash-a" @click="onDeleteOrRecovery('delete')">删除</Button>
@@ -30,7 +30,7 @@
     <AppTable ref="table" url="system/user" :columns="columns" :form="$refs.queryForm"/>
 
     <!--新增/编辑用户的界面-->
-    <UserFormModal ref="userModal" @success="query($refs.table)"/>
+    <UserFormModal ref="userModal" @success="refresh($refs.table)"/>
 
     <!--修改密码的界面-->
     <UserPasswordModal ref="passwordModal"/>

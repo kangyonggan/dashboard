@@ -52,7 +52,7 @@
     },
     mounted: function () {
       if (!this.pagination) {
-        this.query(this);
+        this.refresh(this);
       }
     },
     methods: {

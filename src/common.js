@@ -7,7 +7,7 @@ Vue.prototype.post = post;
 Vue.prototype.yesNo = yesNo;
 Vue.prototype.sortChange = sortChange;
 Vue.prototype.reset = reset;
-Vue.prototype.query = query;
+Vue.prototype.refresh = refresh;
 Vue.prototype.jump = jump;
 Vue.prototype.changePageSize = changePageSize;
 
@@ -146,7 +146,7 @@ function sortChange(e, table) {
         model.order = null;
       }
     }
-    query(table);
+    refresh(table);
   }
 }
 
@@ -155,7 +155,7 @@ function sortChange(e, table) {
  *
  * @param table
  */
-function query(table) {
+function refresh(table) {
   let url = table.url + getFormParams(table.form);
   table.loading = true;
   get(url, function (data) {
@@ -179,7 +179,7 @@ function jump(pageNum, table) {
     form.model.pageNum = pageNum;
   }
 
-  query(table);
+  refresh(table);
 }
 
 /**
@@ -195,5 +195,5 @@ function changePageSize(pageSize, table) {
     form.model.pageNum = 1;
   }
 
-  query(table);
+  refresh(table);
 }
