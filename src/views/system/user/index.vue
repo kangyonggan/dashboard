@@ -31,6 +31,8 @@
 
     <!--新增/编辑-->
     <UserFormModal ref="userModal" @success="query($refs.table)"/>
+
+    <!--修改密码-->
     <UserPasswordModal ref="passwordModal"/>
   </div>
 </template>
