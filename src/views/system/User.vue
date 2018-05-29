@@ -28,7 +28,8 @@
     </Form>
 
     <!--表格-->
-    <Table :loading="loading" border :columns="columns" :data="pageInfo.list" @on-selection-change="selectionChange" @on-sort-change="sortChange($event, params, $refs.queryForm)"/>
+    <Table :loading="loading" border :columns="columns" :data="pageInfo.list" @on-selection-change="selectionChange"
+           @on-sort-change="sortChange($event, params, $refs.queryForm)"/>
 
     <!--分页-->
     <Page :total="pageInfo.total" show-total show-sizer show-elevator :style="{marginTop: '20px'}"
@@ -36,7 +37,8 @@
           @on-page-size-change="changePageSize($event, $refs.queryForm)"></Page>
 
     <!--新增/编辑-->
-    <FormModal ref="userModal" :action="'system/user/' + (user.id ? 'update' : 'save')" :title="(user.id ? '编辑' : '新增') + '用户'" :model="user" :rules="userValidate" :success="onSuccess">
+    <FormModal ref="userModal" :action="'system/user/' + (user.id ? 'update' : 'save')"
+               :title="(user.id ? '编辑' : '新增') + '用户'" :model="user" :rules="userValidate" :success="onSuccess">
       <FormItem label="用户名" prop="username">
         <Input v-model="user.username" placeholder="请输入用户名"/>
       </FormItem>
@@ -49,7 +51,8 @@
     </FormModal>
 
     <!--修改密码-->
-    <FormModal ref="passwordModal" action="system/user/password" title="修改密码" :model="user" :rules="userValidate" :success="onSuccess">
+    <FormModal ref="passwordModal" action="system/user/password" title="修改密码" :model="user" :rules="userValidate"
+               :success="onSuccess">
       <FormItem label="新密码" prop="password">
         <Input type="password" v-model="user.password" placeholder="请输入新密码"/>
       </FormItem>
@@ -70,6 +73,10 @@
          * 模态框表单的参数
          */
         user: {},
+        /**
+         * 老的用户名
+         */
+        oldUsername: '',
         /**
          * 分页信息
          */
@@ -144,6 +151,7 @@
                         username: params.row.username,
                         realname: params.row.realname
                       };
+                      this.oldUsername = params.row.username;
                       this.$refs.userModal.show();
                     }
                   }
@@ -155,18 +163,36 @@
          */
         userValidate: {
           username: [
-            {required: true, message: '用户名为必填项'}
+            {validator: this.validateUsername, trigger: 'blur'}
           ],
           realname: [
-            {required: true, message: '真实姓名为必填项'}
+            {required: true, message: '真实姓名为必填项', trigger: 'blur'}
           ],
           password: [
-            {required: true, message: '密码为必填项'}
+            {required: true, message: '密码为必填项', trigger: 'blur'}
           ]
         }
       }
     },
     methods: {
+      /**
+       * 校验用户名是否存在
+       */
+      validateUsername: function (rule, value, callback) {
+        if (!value) {
+          callback(new Error('用户名为必填项'));
+        }
+
+        if (value === this.oldUsername) {
+          callback();
+        }
+
+        this.get("validate/username/" + value, function () {
+          callback();
+        }, function () {
+          callback(new Error('用户名已存在'));
+        });
+      },
       /**
        * 批量删除
        */
