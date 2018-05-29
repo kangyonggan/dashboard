@@ -28,7 +28,7 @@
     </Form>
 
     <!--表格-->
-    <Table :loading="loading" border :columns="columns" :data="pageInfo.list" @on-selection-change="selectionChange"/>
+    <Table :loading="loading" border :columns="columns" :data="pageInfo.list" @on-selection-change="selectionChange" @on-sort-change="sortChange($event, params, $refs.queryForm)"/>
 
     <!--分页-->
     <Page :total="pageInfo.total" show-total show-sizer show-elevator :style="{marginTop: '20px'}"
@@ -93,30 +93,36 @@
           },
           {
             title: 'ID',
-            key: 'id'
+            key: 'id',
+            sortable: true
           },
           {
             title: '用户名',
-            key: 'username'
+            key: 'username',
+            sortable: true
           },
           {
             title: '真实姓名',
-            key: 'realname'
+            key: 'realname',
+            sortable: true
           },
           {
             title: '逻辑删除',
             key: 'isDeleted',
+            sortable: true,
             render: (h, params) => {
               return this.yesNo(h, params);
             }
           },
           {
             title: '创建时间',
-            key: 'createdTime'
+            key: 'createdTime',
+            sortable: true
           },
           {
             title: '更新时间',
-            key: 'updatedTime'
+            key: 'updatedTime',
+            sortable: true
           },
           {
             title: '操作',

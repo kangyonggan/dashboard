@@ -5,6 +5,7 @@ import axios from 'axios'
 Vue.prototype.get = get;
 Vue.prototype.post = post;
 Vue.prototype.yesNo = yesNo;
+Vue.prototype.sortChange = sortChange;
 Vue.prototype.reset = reset;
 Vue.prototype.query = query;
 Vue.prototype.jump = jump;
@@ -121,6 +122,30 @@ function getQueryParams(params) {
   }
 
   return ps;
+}
+
+/**
+ * 排序
+ *
+ * @param e
+ * @param params
+ * @param form
+ */
+function sortChange(e, params, form) {
+  if (params) {
+    console.log(e);
+    if (e.order !== 'normal') {
+      params.sort = e.key;
+      params.order = e.order;
+    } else {
+      params.sort = null;
+      params.order = null;
+    }
+  }
+
+  if (form) {
+    query(form);
+  }
 }
 
 /**
