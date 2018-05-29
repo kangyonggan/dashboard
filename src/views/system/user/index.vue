@@ -141,7 +141,7 @@
               "usernames": table.getSelectionFields("username").join(",")
             }, function (data) {
               that.$Message.success(data.respMsg);
-              that.query(table);
+              that.refresh(table);
             }, function () {
               that.$Message.error("网络错误，请稍后再试！");
             });
