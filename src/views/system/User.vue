@@ -18,7 +18,7 @@
         <FormItem>
           <Button type="info" icon="ios-search" @click="query($refs.queryForm)">查询</Button>
           <Button type="warning" icon="ios-refresh-empty" @click="reset($refs.queryForm)">清除</Button>
-          <Button type="primary" icon="plus" @click="onCreate">新增</Button>
+          <Button type="primary" icon="plus" @click="$refs.userModal.show({})">新增</Button>
           <Button type="error" icon="trash-a" @click="onDeleteOrRecovery('delete')">删除</Button>
           <Button type="warning" icon="ios-undo" @click="onDeleteOrRecovery('recovery')">恢复</Button>
           <Button type="info" icon="locked" @click="onPassword">修改密码</Button>
@@ -30,31 +30,17 @@
     <AppTable ref="table" url="system/user" :columns="columns" :form="$refs.queryForm"/>
 
     <!--新增/编辑-->
-    <AppModal ref="userModal" :action="'system/user/' + (user.id ? 'update' : 'save')"
-              :title="(user.id ? '编辑' : '新增') + '用户'" :model="user" :rules="userValidate" :success="onSuccess">
-      <FormItem label="用户名" prop="username">
-        <Input v-model="user.username" placeholder="请输入用户名"/>
-      </FormItem>
-      <FormItem label="真实姓名" prop="realname">
-        <Input v-model="user.realname" placeholder="请输入真实姓名"/>
-      </FormItem>
-      <FormItem label="密码" prop="password" v-if="!user.id">
-        <Input type="password" v-model="user.password" placeholder="请输入密码"/>
-      </FormItem>
-    </AppModal>
-
-    <!--修改密码-->
-    <AppModal ref="passwordModal" action="system/user/password" title="修改密码" :model="user" :rules="userValidate"
-              :success="onSuccess">
-      <FormItem label="新密码" prop="password">
-        <Input type="password" v-model="user.password" placeholder="请输入新密码"/>
-      </FormItem>
-    </AppModal>
+    <UserFormModal ref="userModal" @success="query($refs.table)"/>
+    <UserPasswordModal ref="passwordModal"/>
   </div>
 </template>
 
 <script>
+  import UserFormModal from "./user-form-modal.vue";
+  import UserPasswordModal from "./user-password-modal.vue";
+
   export default {
+    components: {UserFormModal, UserPasswordModal},
     name: 'User',
     data() {
       return {
@@ -62,14 +48,6 @@
          * 搜索表单的参数
          */
         params: {},
-        /**
-         * 模态框表单的参数
-         */
-        user: {},
-        /**
-         * 老的用户名
-         */
-        oldUsername: '',
         /**
          * 表格的列
          */
@@ -127,53 +105,19 @@
                   },
                   on: {
                     click: () => {
-                      this.user = {
+                      this.$refs.userModal.show({
                         id: params.row.id,
                         username: params.row.username,
                         realname: params.row.realname
-                      };
-                      this.oldUsername = params.row.username;
-                      this.$refs.userModal.show();
+                      });
                     }
                   }
                 }, '编辑')]);
             }
-          }],
-        /**
-         * 表单的校验
-         */
-        userValidate: {
-          username: [
-            {validator: this.validateUsername, trigger: 'blur'}
-          ],
-          realname: [
-            {required: true, message: '真实姓名为必填项', trigger: 'blur'}
-          ],
-          password: [
-            {required: true, message: '密码为必填项', trigger: 'blur'}
-          ]
-        }
+          }]
       }
     },
     methods: {
-      /**
-       * 校验用户名是否存在
-       */
-      validateUsername: function (rule, value, callback) {
-        if (!value) {
-          callback(new Error('用户名为必填项'));
-        }
-
-        if (value === this.oldUsername) {
-          callback();
-        }
-
-        this.get("validate/username/" + value, function () {
-          callback();
-        }, function () {
-          callback(new Error('用户名已存在'));
-        });
-      },
       /**
        * 删除/恢复用户
        */
@@ -209,24 +153,10 @@
        */
       onPassword: function () {
         if (this.$refs.table.hasSelection()) {
-          this.user = {usernames: this.$refs.table.getSelectionFields("username").join(",")};
-          this.$refs.passwordModal.show();
+          this.$refs.passwordModal.show({usernames: this.$refs.table.getSelectionFields("username").join(",")});
         } else {
           this.$Message.warning("至少选择一行！");
         }
-      },
-      /**
-       * 新增用户
-       */
-      onCreate: function () {
-        this.user = {};
-        this.$refs.userModal.show();
-      },
-      /**
-       * 提交成功
-       */
-      onSuccess: function () {
-        this.query(this.$refs.table);
       }
     }
   }
