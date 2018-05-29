@@ -130,10 +130,13 @@ function getQueryParams(params) {
  */
 function query(form) {
   let url = window.location.hash.substring(2) + getQueryParams(form.model);
+  form.$parent.loading = true;
   get(url, function (data) {
     form.$parent.pageInfo = data.pageInfo;
+    form.$parent.loading = false;
   }, function () {
     form.$Message.error('网络错误，请稍后再试!');
+    form.$parent.loading = false;
   });
 }
 

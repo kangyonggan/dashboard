@@ -28,7 +28,7 @@
     </Form>
 
     <!--表格-->
-    <Table border :columns="columns" :data="pageInfo.list" @on-selection-change="selectionChange"/>
+    <Table :loading="loading" border :columns="columns" :data="pageInfo.list" @on-selection-change="selectionChange"/>
 
     <!--分页-->
     <Page :total="pageInfo.total" show-total show-sizer show-elevator :style="{marginTop: '20px'}"
@@ -77,6 +77,10 @@
          * 分页信息
          */
         pageInfo: {},
+        /**
+         * 表格加载中
+         */
+        loading: false,
         /**
          * 已选择的行
          */
@@ -165,9 +169,6 @@
        */
       deleteBatch: function () {
         let usernames = this.getSelections();
-        if (usernames.length === 0) {
-          return;
-        }
 
         let that = this;
         this.post("system/user/delete", {
@@ -186,9 +187,6 @@
        */
       recoveryBatch: function () {
         let usernames = this.getSelections();
-        if (usernames.length === 0) {
-          return;
-        }
 
         let that = this;
         this.post("system/user/recovery", {
@@ -214,6 +212,10 @@
        * 删除用户
        */
       onDelete: function () {
+        if (this.getSelections().length === 0) {
+          return;
+        }
+
         let that = this;
         this.$Modal.confirm({
           title: "删除确认",
@@ -229,6 +231,10 @@
        * 恢复用户
        */
       onRecovery: function () {
+        if (this.getSelections().length === 0) {
+          return;
+        }
+
         let that = this;
         this.$Modal.confirm({
           title: "恢复确认",
