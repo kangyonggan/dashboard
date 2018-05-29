@@ -34,15 +34,19 @@
 
     <!--修改密码的界面-->
     <UserPasswordModal ref="passwordModal"/>
+
+    <!--设置角色的界面-->
+    <UserRoleModal ref="roleModal"/>
   </div>
 </template>
 
 <script>
   import UserFormModal from "./user-form-modal.vue";
   import UserPasswordModal from "./user-password-modal.vue";
+  import UserRoleModal from "./user-role-modal.vue";
 
   export default {
-    components: {UserFormModal, UserPasswordModal},
+    components: {UserFormModal, UserPasswordModal, UserRoleModal},
     data() {
       return {
         /**
@@ -113,7 +117,24 @@
                       });
                     }
                   }
-                }, '编辑')]);
+                }, '编辑'),
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small',
+                    icon: 'ios-people'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.$refs.roleModal.show({
+                        username: params.row.username,
+                      });
+                    }
+                  }
+                }, '设置角色')]);
             }
           }]
       }
