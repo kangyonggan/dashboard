@@ -12,7 +12,6 @@
 
 <script>
   export default {
-    name: 'app-select-remote',
     props: {
       model: {
         required: true,

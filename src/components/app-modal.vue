@@ -13,7 +13,6 @@
 
 <script>
   export default {
-    name: 'app-modal',
     props: {
       title: {
         required: true,

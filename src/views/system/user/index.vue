@@ -16,7 +16,7 @@
       </FormItem>
       <Row>
         <FormItem>
-          <Button type="info" icon="ios-search" @click="query($refs.queryForm)">查询</Button>
+          <Button type="info" icon="ios-search" @click="query($refs.table)">查询</Button>
           <Button type="warning" icon="ios-refresh-empty" @click="reset($refs.queryForm)">清除</Button>
           <Button type="primary" icon="plus" @click="$refs.userModal.show({})">新增</Button>
           <Button type="error" icon="trash-a" @click="onDeleteOrRecovery('delete')">删除</Button>
@@ -41,7 +41,6 @@
 
   export default {
     components: {UserFormModal, UserPasswordModal},
-    name: 'User',
     data() {
       return {
         /**

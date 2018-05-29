@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/views/Index'
-import User from '@/views/system/User'
-import Role from '@/views/system/Role'
-import Menu from '@/views/system/Menu'
+import User from '@/views/system/user/index'
+import Role from '@/views/system/role/index'
+import Menu from '@/views/system/menu/index'
 import Info from '@/views/user/Info'
 import NotFound from '@/views/NotFound'
 

@@ -13,7 +13,6 @@
 
 <script>
   export default {
-    name: 'app-table',
     props: {
       url: {
         required: true,
