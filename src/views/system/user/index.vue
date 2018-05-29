@@ -1,18 +1,18 @@
 <template>
   <div>
     <!--搜索表单-->
-    <Form ref="queryForm" :model="params" inline>
+    <Form ref="queryForm" :model="user" inline>
       <FormItem prop="username">
-        <AppSelectRemote :model="params" prop="username" url="system/user/search" placeholder="请输入用户名"/>
+        <AppSelectRemote :model="user" prop="username" url="system/user/search" placeholder="请输入用户名"/>
       </FormItem>
       <FormItem prop="realname">
-        <AppSelectRemote :model="params" prop="realname" url="system/user/search" placeholder="请输入真实姓名"/>
+        <AppSelectRemote :model="user" prop="realname" url="system/user/search" placeholder="请输入真实姓名"/>
       </FormItem>
       <FormItem prop="startCreatedTime">
-        <AppDatePicker :model="params" prop="startCreatedTime" placeholder="请选择创建开始日期"/>
+        <AppDatePicker :model="user" prop="startCreatedTime" placeholder="请选择创建开始日期"/>
       </FormItem>
       <FormItem prop="endCreatedTime">
-        <AppDatePicker :model="params" prop="endCreatedTime" placeholder="请选择创建结束日期"/>
+        <AppDatePicker :model="user" prop="endCreatedTime" placeholder="请选择创建结束日期"/>
       </FormItem>
       <Row>
         <FormItem>
@@ -46,7 +46,7 @@
         /**
          * 搜索表单的参数
          */
-        params: {},
+        user: {},
         /**
          * 表格的列
          */
