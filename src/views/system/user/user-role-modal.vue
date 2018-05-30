@@ -2,7 +2,7 @@
   <!--设置角色-->
   <AppModal ref="modal" :action="'system/user/' + user.username + '/role'" title="设置角色" :model="user">
     <FormItem prop="roleCodes">
-      <CheckboxGroup v-model="user.roleCodes" @on-change="change">
+      <CheckboxGroup v-model="user.roleCodes">
         <Checkbox v-for="(role, index) in roles" :key="index" :label="role.code">
           <span>{{role.name}}</span>
         </Checkbox>
@@ -42,10 +42,6 @@
             that.roles = data.roles;
           });
         });
-      },
-      change: function (e) {
-        console.log(e);
-        console.log(this.user.roleCodes);
       }
     }
   }

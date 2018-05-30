@@ -102,8 +102,7 @@
                 h('Button', {
                   props: {
                     type: 'primary',
-                    size: 'small',
-                    icon: 'edit'
+                    size: 'small'
                   },
                   style: {
                     marginRight: '5px'
@@ -121,8 +120,7 @@
                 h('Button', {
                   props: {
                     type: 'primary',
-                    size: 'small',
-                    icon: 'ios-people'
+                    size: 'small'
                   },
                   style: {
                     marginRight: '5px'
